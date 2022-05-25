@@ -28,16 +28,17 @@ use App\Http\Controllers\UserController;
 Route::middleware(['auth:api'])->group(function () {
 
     Route::get('/user', [UserController::class, 'getuser']);
-
     Route::post('/my-post', [PostController::class, 'store']);
     Route::get('/get-post', [PostController::class, 'index']);
     Route::get('/mygetpost', [PostController::class, 'mypost']);
+    Route::get('post-delete/{id}', [PostController::class, 'post_delete']);
 
     Route::get('post-delete/{id}', [PostController::class, 'post_delete']);
 
+    Route::get('profileimage-delete/{id}', [UserController::class, 'profileimagedelete']);
+
     Route::post('/profile-update/{id}', [UserController::class, 'update']);
     Route::get('/post-view/{id}', [PostController::class, 'post_view']);
-
 });
 //PostController
 

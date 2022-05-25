@@ -20,6 +20,26 @@ class UserController extends Controller
     }
 
 
+    public function profileimagedelete($id)
+    {
+        $images = ProfileImages::find($id);
+        if($images){
+            $destinationPath = public_path('/profile/'.$images->pro_images);
+            $thumbnailpath     = public_path('/profile/orginal/'.$images->pro_images);
+
+            if(file_exists($destinationPath)){
+                unlink($destinationPath);
+                unlink($thumbnailpath);
+            }
+        }
+      
+        $images->delete();
+        return response()->json(['status' => 'success', 'message' => 'Data has deleted success'], 200);
+
+    }
+
+
+
     public function index()
     {
         
