@@ -8,6 +8,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PullController;
 
 
 /*
@@ -32,13 +33,20 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('/get-post', [PostController::class, 'index']);
     Route::get('/mygetpost', [PostController::class, 'mypost']);
     Route::get('post-delete/{id}', [PostController::class, 'post_delete']);
-
     Route::get('post-delete/{id}', [PostController::class, 'post_delete']);
-
     Route::get('profileimage-delete/{id}', [UserController::class, 'profileimagedelete']);
-
     Route::post('/profile-update/{id}', [UserController::class, 'update']);
     Route::get('/post-view/{id}', [PostController::class, 'post_view']);
+
+    Route::prefix('pull')->group(function () {
+        Route::get('/', [PullController::class, 'index']);
+        Route::post('/store', [PullController::class, 'store']);
+        Route::get('/edit/{id}', [PullController::class, 'edit']);
+        Route::post('/update/{id}', [PullController::class, 'update']);
+        Route::get('/delete/{id}', [PullController::class, 'delete']);
+    });
+
+
 });
 //PostController
 
