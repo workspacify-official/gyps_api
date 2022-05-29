@@ -30,9 +30,14 @@ Route::middleware(['auth:api'])->group(function () {
 
     Route::get('/user', [UserController::class, 'getuser']);
     Route::post('/my-post', [PostController::class, 'store']);
+
+    Route::post('post-update/{id}', [PostController::class, 'update']);
+
     Route::get('/get-post', [PostController::class, 'index']);
     Route::get('/mygetpost', [PostController::class, 'mypost']);
-    Route::get('post-delete/{id}', [PostController::class, 'post_delete']);
+
+    Route::get('/post-edit/{id}', [PostController::class, 'show']);
+
     Route::get('post-delete/{id}', [PostController::class, 'post_delete']);
     Route::get('profileimage-delete/{id}', [UserController::class, 'profileimagedelete']);
     Route::post('/profile-update/{id}', [UserController::class, 'update']);
