@@ -12,8 +12,17 @@ class MyPost extends Model
    
     public function images()
     {
-        return $this->hasMany('App\Models\PostImages', 'post_id');
+        return $this->hasMany(PostImages::class, 'post_id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comments::class, 'post_id')->whereNull('parent_id');
+    }
 
 }

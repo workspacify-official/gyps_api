@@ -15,7 +15,7 @@ class UserController extends Controller
     {
         $user_id =  Auth::user()->id;
         $data['userinfo'] = Auth::user();
-        $data['profile_photos'] = ProfileImages::where('user_id', $user_id)->get();
+        //$data['profile_photos'] = ProfileImages::where('user_id', $user_id)->get();
         return response()->json($data, 200);
     }
 
@@ -186,7 +186,6 @@ class UserController extends Controller
             if($request->emoji){
                 $datasave->emoji         = implode(',', json_decode($request->emoji, true));
             }
-           
 
            if($request->privacy_emoji){
             $datasave->privacy_emoji = $request->privacy_emoji;
