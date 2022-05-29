@@ -112,33 +112,76 @@ class UserController extends Controller
 
            //ProfileImages
 
-        if($request->hasFile('photos')){
+        if($request->hasFile('photo')){
 
-           // $photo_name        = time().$request->file('photo')->getClientOriginalName();
-           // $request->file('photo')->move(public_path('profile'), $photo_name);
-           // $datasave->photo   = $photo_name;
-                $files = $request->file('photos');
+                $photo           = $request->file('photo');
                 $destinationPath = public_path('/profile');
-                foreach ($files as $file) {
-                    $imagesave = new ProfileImages();
-                    $name = time() . '.' . $file->getClientOriginalExtension();
-                
-                    $imgFile = Image::make($file->getRealPath());
-                    $imgFile->resize(300, 300, function ($constraint) {
-                    $constraint->aspectRatio();
-                    })->save($destinationPath . '/' . $name);
+                $name = time() . '.' . $photo->getClientOriginalName();
+                $imgFile = Image::make($photo->getRealPath());
+                $imgFile->resize(300, 300, function ($constraint) {
+                $constraint->aspectRatio();
+                })->save($destinationPath . '/' . $name);
 
-                    $imagesave->pro_images = $name;
-                    $imagesave->user_id    = $id;
-                    $imagesave->save();
-                    $destinationPath = public_path('/profile/orginal/');
-                    $file->move($destinationPath, $name);
-                }
+                $datasave->photo = $name;
 
-
+                $destinationPath = public_path('/profile/orginal/');
+                $file->move($destinationPath, $name);
+            
            }
 
-              
+
+
+           if($request->hasFile('photo1')){
+                $photo1           = $request->file('photo1');
+                $destinationPath = public_path('/profile');
+                $name1 = time() . '.' . $photo1->getClientOriginalName();
+                $imgFile1 = Image::make($photo1->getRealPath());
+                $imgFile1->resize(300, 300, function ($constraint) {
+                $constraint->aspectRatio();
+                })->save($destinationPath . '/' . $name1);
+                $datasave->photo1 = $name1;
+                $destinationPath = public_path('/profile/orginal/');
+                $file->move($destinationPath, $name1);
+           }
+
+           if($request->hasFile('photo2')){
+                $photo2           = $request->file('photo2');
+                $destinationPath = public_path('/profile');
+                $name2 = time() . '.' . $photo2->getClientOriginalName();
+                $imgFile2 = Image::make($photo2->getRealPath());
+                $imgFile2->resize(300, 300, function ($constraint) {
+                $constraint->aspectRatio();
+                })->save($destinationPath . '/' . $name2);
+                $datasave->photo2 = $name2;
+                $destinationPath = public_path('/profile/orginal/');
+                $file->move($destinationPath, $name2);
+           }
+            
+            if($request->hasFile('photo3')){
+                $photo3           = $request->file('photo3');
+                $destinationPath = public_path('/profile');
+                $name3 = time() . '.' . $photo3->getClientOriginalName();
+                $imgFile3 = Image::make($photo3->getRealPath());
+                $imgFile3->resize(300, 300, function ($constraint) {
+                $constraint->aspectRatio();
+                })->save($destinationPath . '/' . $name3);
+                $datasave->photo3 = $name3;
+                $destinationPath = public_path('/profile/orginal/');
+                $file->move($destinationPath, $name3);
+           }
+
+           if($request->hasFile('photo4')){
+                $photo4           = $request->file('photo4');
+                $destinationPath = public_path('/profile');
+                $name4 = time() . '.' . $photo4->getClientOriginalName();
+                $imgFile4 = Image::make($photo4->getRealPath());
+                $imgFile4->resize(300, 300, function ($constraint) {
+                $constraint->aspectRatio();
+                })->save($destinationPath . '/' . $name4);
+                $datasave->photo4 = $name4;
+                $destinationPath = public_path('/profile/orginal/');
+                $file->move($destinationPath, $name4);
+           }
            
             if($request->emoji){
                 $datasave->emoji         = implode(',', json_decode($request->emoji, true));
