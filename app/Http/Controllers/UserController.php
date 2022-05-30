@@ -216,39 +216,52 @@ class UserController extends Controller
 
             }else if($position == 2){
 
-                $destinationPath   = public_path('/profile/'.$datasave->photo2);
-                $thumbnailpath     = public_path('/profile/orginal/'.$datasave->photo2);
-                if(file_exists($destinationPath)){
-                    unlink($destinationPath);
+                if($datasave->photo2){
+
+                        $destinationPath   = public_path('/profile/'.$datasave->photo2);
+                        $thumbnailpath     = public_path('/profile/orginal/'.$datasave->photo2);
+                        if(file_exists($destinationPath)){
+                            unlink($destinationPath);
+                        }
+                        if(file_exists($thumbnailpath)){
+                            unlink($thumbnailpath);
+                        }
+
                 }
-                if(file_exists($thumbnailpath)){
-                    unlink($thumbnailpath);
-                }
+               
+
                 $datasave->photo2 = $name;
 
             }else if($position == 3){
 
-                $destinationPath   = public_path('/profile/'.$datasave->photo3);
-                $thumbnailpath     = public_path('/profile/orginal/'.$datasave->photo3);
-                if(file_exists($destinationPath)){
-                    unlink($destinationPath);
+                if($datasave->photo3){
+
+                     $destinationPath   = public_path('/profile/'.$datasave->photo3);
+                    $thumbnailpath     = public_path('/profile/orginal/'.$datasave->photo3);
+                    if(file_exists($destinationPath)){
+                        unlink($destinationPath);
+                    }
+                    if(file_exists($thumbnailpath)){
+                        unlink($thumbnailpath);
+                    }
                 }
-                if(file_exists($thumbnailpath)){
-                    unlink($thumbnailpath);
-                }
+               
 
                 $datasave->photo3 = $name;
 
             }else if($position == 4){
 
-                 $destinationPath   = public_path('/profile/'.$datasave->photo4);
-                 $thumbnailpath      = public_path('/profile/orginal/'.$datasave->photo4);
-                if(file_exists($destinationPath)){
-                    unlink($destinationPath);
+                if($datasave->photo4){
+                    $destinationPath   = public_path('/profile/'.$datasave->photo4);
+                    $thumbnailpath      = public_path('/profile/orginal/'.$datasave->photo4);
+                    if(file_exists($destinationPath)){
+                        unlink($destinationPath);
+                    }
+                    if(file_exists($thumbnailpath)){
+                        unlink($thumbnailpath);
+                    }
                 }
-                if(file_exists($thumbnailpath)){
-                    unlink($thumbnailpath);
-                }
+
                 $datasave->photo4 = $name;
             }
 
@@ -264,6 +277,11 @@ class UserController extends Controller
 
     public function profileimagemoving(Request $request)
     {
+
+        $user_id = Auth::user()->id;
+
+        $datasave  = User::find($user_id);
+
         if($request->isMethod('post')){
 
             $data = $request->all();
@@ -288,6 +306,22 @@ class UserController extends Controller
             if($validation->fails()){
                 return response()->json($validation->errors(), 422);
             }
+
+            $from_postion  = $request->from_position;
+            $to_position   = $request->to_position;
+
+            if($from_postion == 0){
+                $form_name   = $datasave->photo;
+            }else if($from_postion == 1){
+                $form_name   = $datasave->photo1;
+            }else if($from_postion == 2){
+                $form_name   = $datasave->photo2;
+            }else if($from_postion == 3){
+                $form_name   = $datasave->photo3;
+            }else if($from_postion == 4){
+                $form_name   = $datasave->photo4; 
+            }
+
 
 
         }else{
