@@ -143,6 +143,124 @@ class UserController extends Controller
         
     }
 
+    public function profilephotoupload(Request $request)
+    {
+       
+        $user_id = Auth::user()->id;
+        $datasave = User::find($user_id);
+
+        if($request->isMethod('post')){
+
+             $data = $request->all();
+            $rules = [
+                'photo'          => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'position'       => 'required|numeric|min:0|max:4',
+            ];
+
+             $cutomemesage = [
+                'photo.required'          => 'Images is required',
+                'photo.mimes'             => 'Image allowed only png,jpg,jpeg and gif',
+                'photo.max'               => 'Image maximum size 1 mb',
+                'photo.image'             => 'The must be image upload',
+                'position.required'       => 'Position is required',
+                'position.numeric'        => 'Position is numeric data',
+                'position.min'            => 'Position is minimum 0',
+                'position.max'            => 'Position is maximum 4',
+            ];
+
+            $validation = Validator::make($data, $rules, $cutomemesage);
+
+            if($validation->fails()){
+                return response()->json($validation->errors(), 422);
+            }
+
+            $position           = $request->position;
+
+            $photo        = $request->file('photo');
+            $destinationPath = public_path('/profile');
+            $name = time() . '.' . $photo->getClientOriginalName();
+            $imgFile = Image::make($photo->getRealPath());
+            $imgFile->resize(300, 300, function ($constraint) {
+            $constraint->aspectRatio();
+            })->save($destinationPath . '/' . $name);
+            $destinationPath = public_path('/profile/orginal/');
+            $photo->move($destinationPath, $name);
+
+            if($position == 0){
+
+                $destinationPath   = public_path('/profile/'.$datasave->photo);
+                $thumbnailpath     = public_path('/profile/orginal/'.$datasave->photo);
+                if(file_exists($destinationPath)){
+                    unlink($destinationPath);
+                }
+                if(file_exists($thumbnailpath)){
+                    unlink($thumbnailpath);
+                }
+
+                $datasave->photo = $name;
+
+
+            }else if($position == 1){
+
+                $destinationPath   = public_path('/profile/'.$datasave->photo1);
+                $thumbnailpath     = public_path('/profile/orginal/'.$datasave->photo1);
+                if(file_exists($destinationPath)){
+                    unlink($destinationPath);
+                }
+                if(file_exists($thumbnailpath)){
+                    unlink($thumbnailpath);
+                }
+
+                $datasave->photo1 = $name;
+
+
+            }else if($position == 2){
+
+                $destinationPath   = public_path('/profile/'.$datasave->photo2);
+                $thumbnailpath     = public_path('/profile/orginal/'.$datasave->photo2);
+                if(file_exists($destinationPath)){
+                    unlink($destinationPath);
+                }
+                if(file_exists($thumbnailpath)){
+                    unlink($thumbnailpath);
+                }
+                $datasave->photo2 = $name;
+
+            }else if($position == 3){
+
+                $destinationPath   = public_path('/profile/'.$datasave->photo3);
+                $thumbnailpath     = public_path('/profile/orginal/'.$datasave->photo3);
+                if(file_exists($destinationPath)){
+                    unlink($destinationPath);
+                }
+                if(file_exists($thumbnailpath)){
+                    unlink($thumbnailpath);
+                }
+
+                $datasave->photo3 = $name;
+
+            }else if($position == 4){
+
+                 $destinationPath   = public_path('/profile/'.$datasave->photo4);
+                 $thumbnailpath      = public_path('/profile/orginal/'.$datasave->photo4);
+                if(file_exists($destinationPath)){
+                    unlink($destinationPath);
+                }
+                if(file_exists($thumbnailpath)){
+                    unlink($thumbnailpath);
+                }
+                $datasave->photo4 = $name;
+            }
+
+            $datasave->save();
+            return response()->json(['status' => 'success', 'message' => 'Data has been upload success!'], 200);
+
+        }else{
+           return response()->json("Invalid url", 422); 
+        }
+
+
+    }
   
     public function update(Request $request, $id)
     {
@@ -202,7 +320,7 @@ class UserController extends Controller
                 $datasave->photo = $name;
 
                 $destinationPath = public_path('/profile/orginal/');
-                $file->move($destinationPath, $name);
+                $photo->move($destinationPath, $name);
             
            }
 
@@ -218,7 +336,7 @@ class UserController extends Controller
                 })->save($destinationPath . '/' . $name1);
                 $datasave->photo1 = $name1;
                 $destinationPath = public_path('/profile/orginal/');
-                $file->move($destinationPath, $name1);
+                $photo1->move($destinationPath, $name1);
            }
 
            if($request->hasFile('photo2')){
@@ -231,7 +349,7 @@ class UserController extends Controller
                 })->save($destinationPath . '/' . $name2);
                 $datasave->photo2 = $name2;
                 $destinationPath = public_path('/profile/orginal/');
-                $file->move($destinationPath, $name2);
+                $photo2->move($destinationPath, $name2);
            }
             
             if($request->hasFile('photo3')){
@@ -244,7 +362,7 @@ class UserController extends Controller
                 })->save($destinationPath . '/' . $name3);
                 $datasave->photo3 = $name3;
                 $destinationPath = public_path('/profile/orginal/');
-                $file->move($destinationPath, $name3);
+                $photo3->move($destinationPath, $name3);
            }
 
            if($request->hasFile('photo4')){
@@ -257,7 +375,7 @@ class UserController extends Controller
                 })->save($destinationPath . '/' . $name4);
                 $datasave->photo4 = $name4;
                 $destinationPath = public_path('/profile/orginal/');
-                $file->move($destinationPath, $name4);
+                $photo4->move($destinationPath, $name4);
            }
            
             if($request->emoji){

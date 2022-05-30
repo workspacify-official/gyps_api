@@ -45,6 +45,9 @@ Route::middleware(['auth:api'])->group(function () {
     Route::post('/profile-update/{id}', [UserController::class, 'update']);
     Route::post('profileimage-delete', [UserController::class, 'profileimagedelete']);
 
+    Route::post('profile-photo-upload', [UserController::class, 'profilephotoupload']);
+
+
     Route::prefix('pull')->group(function () {
         Route::get('/', [PullController::class, 'index']);
         Route::post('/store', [PullController::class, 'store']);
