@@ -20,20 +20,97 @@ class UserController extends Controller
     }
 
 
-    public function profileimagedelete($id)
+    public function profileimagedelete(Request $request)
     {
-        $images = ProfileImages::find($id);
-        if($images){
-            $destinationPath = public_path('/profile/'.$images->pro_images);
-            $thumbnailpath     = public_path('/profile/orginal/'.$images->pro_images);
 
-            if(file_exists($destinationPath)){
-                unlink($destinationPath);
-                unlink($thumbnailpath);
+        $user_id = Auth::user()->id;
+        $datasave = User::find($user_id);
+
+        $position = $request->position;
+
+        if($position == 0){
+
+            if($datasave->photo){
+                $destinationPath = public_path('/profile/'.$datasave->photo);
+                $thumbnailpath     = public_path('/profile/orginal/'.$datasave->photo);
+                if(file_exists($destinationPath)){
+                    unlink($destinationPath);
+                }
+                if(file_exists($thumbnailpath)){
+                    unlink($thumbnailpath);
+                }
+
+            }  
+
+            $datasave->photo = NULL;
+
+        }else if($position == 1){
+             if($datasave->photo1){
+
+                $destinationPath   = public_path('/profile/'.$datasave->photo1);
+                $thumbnailpath     = public_path('/profile/orginal/'.$datasave->photo1);
+                if(file_exists($destinationPath)){
+                    unlink($destinationPath);
+                }
+                if(file_exists($thumbnailpath)){
+                    unlink($thumbnailpath);
+                }
+
             }
+        
+        $datasave->photo1 = NULL;
+        
+        }else if($position == 2){
+            if($datasave->photo2){
+                $destinationPath   = public_path('/profile/'.$datasave->photo2);
+                $thumbnailpath     = public_path('/profile/orginal/'.$datasave->photo2);
+                if(file_exists($destinationPath)){
+                    unlink($destinationPath);
+                }
+                if(file_exists($thumbnailpath)){
+                    unlink($thumbnailpath);
+                }
+
+            } 
+            
+         $datasave->photo2 = NULL;
+
+        }else if($position == 3){
+
+             if($datasave->photo3){
+                $destinationPath   = public_path('/profile/'.$datasave->photo3);
+                $thumbnailpath     = public_path('/profile/orginal/'.$datasave->photo3);
+                if(file_exists($destinationPath)){
+                    unlink($destinationPath);
+                }
+
+                if(file_exists($thumbnailpath)){
+                    unlink($thumbnailpath);
+                }    
+
+            }
+
+            $datasave->photo3 = NULL;
+
+        }else if($position == 4){
+
+            if($datasave->photo4){
+                $destinationPath   = public_path('/profile/'.$datasave->photo4);
+                $thumbnailpath     = public_path('/profile/orginal/'.$datasave->photo4);
+                if(file_exists($destinationPath)){
+                    unlink($destinationPath);
+                }
+
+                if(file_exists($thumbnailpath)){
+                    unlink($thumbnailpath);
+                }
+            }
+
+            $datasave->photo4 = NULL;
         }
-      
-        $images->delete();
+        
+
+        $datasave->save();
         return response()->json(['status' => 'success', 'message' => 'Data has deleted success'], 200);
 
     }

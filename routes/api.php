@@ -39,9 +39,11 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('/post-edit/{id}', [PostController::class, 'show']);
 
     Route::get('post-delete/{id}', [PostController::class, 'post_delete']);
-    Route::get('profileimage-delete/{id}', [UserController::class, 'profileimagedelete']);
-    Route::post('/profile-update/{id}', [UserController::class, 'update']);
+
+  
     Route::get('/post-view/{id}', [PostController::class, 'post_view']);
+    Route::post('/profile-update/{id}', [UserController::class, 'update']);
+    Route::post('profileimage-delete', [UserController::class, 'profileimagedelete']);
 
     Route::prefix('pull')->group(function () {
         Route::get('/', [PullController::class, 'index']);
