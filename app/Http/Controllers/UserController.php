@@ -313,7 +313,7 @@ class UserController extends Controller
                 return response()->json($validation->errors(), 422);
             }
 
-            $from_postion  = $request->from_position;
+             $from_postion  = $request->from_position;
             $to_position   = $request->to_position;
 
             if($from_postion == 0){
@@ -326,8 +326,55 @@ class UserController extends Controller
                 $form_name   = $datasave->photo3;
             }else if($from_postion == 4){
                 $form_name   = $datasave->photo4; 
+            }else{
+                 $form_name   = null;    
             }
 
+
+            if($to_position == 0){
+
+                $to_name         = $datasave->photo;
+                $datasave->photo = $form_name;
+
+            }else if($to_position == 1){
+
+                $to_name          = $datasave->photo1;
+                $datasave->photo1 = $form_name;
+
+            }else if($to_position == 2){
+
+                $to_name          = $datasave->photo2;
+                $datasave->photo2 = $form_name;
+
+            }else if($to_position == 3){
+
+                $to_name          = $datasave->photo3;
+                $datasave->photo3 = $form_name;
+
+            }else if($to_position == 4){
+
+                $to_name            = $datasave->photo4;
+                $datasave->photo4   = $form_name;
+
+            }else{
+                $to_name          = null;
+            }
+
+
+            if($from_postion == 0){
+                $datasave->photo   = $to_name;
+            }else if($from_postion == 1){
+                $datasave->photo1   = $to_name;
+            }else if($from_postion == 2){
+                $datasave->photo2   = $to_name;
+            }else if($from_postion == 3){
+                 $datasave->photo3   = $to_name;
+            }else if($from_postion == 4){
+                 $datasave->photo4   = $to_name;
+            }
+
+            $datasave->save();
+            return response()->json(['status' => 'success', 'messages' => 'Data has been updated success!'], 200);
 
 
         }else{
