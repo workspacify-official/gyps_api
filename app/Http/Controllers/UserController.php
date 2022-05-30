@@ -188,28 +188,34 @@ class UserController extends Controller
 
             if($position == 0){
 
-                $destinationPath   = public_path('/profile/'.$datasave->photo);
-                $thumbnailpath     = public_path('/profile/orginal/'.$datasave->photo);
-                if(file_exists($destinationPath)){
-                    unlink($destinationPath);
+                if($datasave->photo){
+                    $destinationPath   = public_path('/profile/'.$datasave->photo);
+                    $thumbnailpath     = public_path('/profile/orginal/'.$datasave->photo);
+                    if(file_exists($destinationPath)){
+                        unlink($destinationPath);
+                    }
+                    if(file_exists($thumbnailpath)){
+                        unlink($thumbnailpath);
+                    }
                 }
-                if(file_exists($thumbnailpath)){
-                    unlink($thumbnailpath);
-                }
+                
 
-                $datasave->photo = $name;
+            $datasave->photo = $name;
 
 
             }else if($position == 1){
-
-                $destinationPath   = public_path('/profile/'.$datasave->photo1);
-                $thumbnailpath     = public_path('/profile/orginal/'.$datasave->photo1);
-                if(file_exists($destinationPath)){
-                    unlink($destinationPath);
+                
+                if($datasave->photo1){
+                    $destinationPath   = public_path('/profile/'.$datasave->photo1);
+                    $thumbnailpath     = public_path('/profile/orginal/'.$datasave->photo1);
+                    if(file_exists($destinationPath)){
+                        unlink($destinationPath);
+                    }
+                    if(file_exists($thumbnailpath)){
+                        unlink($thumbnailpath);
+                    }
                 }
-                if(file_exists($thumbnailpath)){
-                    unlink($thumbnailpath);
-                }
+                
 
                 $datasave->photo1 = $name;
 
