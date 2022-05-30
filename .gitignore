@@ -1,6 +1,11 @@
 /node_modules
 /public/hot
 /public/storage
+/public/audio
+/public/emoji
+/public/post_images
+/public/profile
+/public/video
 /storage/*.key
 /vendor
 .env.backup
