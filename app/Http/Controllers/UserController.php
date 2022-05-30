@@ -178,11 +178,11 @@ class UserController extends Controller
 
             $photo        = $request->file('photo');
             $destinationPath = public_path('/profile');
-            $name = time() . '.' . $photo->getClientOriginalName();
+            $name       = time().$photo->getClientOriginalName();
             $imgFile = Image::make($photo->getRealPath());
             $imgFile->resize(300, 300, function ($constraint) {
             $constraint->aspectRatio();
-            })->save($destinationPath . '/' . $name);
+            })->save($destinationPath.'/'.$name);
             $destinationPath = public_path('/profile/orginal/');
             $photo->move($destinationPath, $name);
 
@@ -259,9 +259,45 @@ class UserController extends Controller
            return response()->json("Invalid url", 422); 
         }
 
-
     }
   
+
+    public function profileimagemoving(Request $request)
+    {
+        if($request->isMethod('post')){
+
+            $data = $request->all();
+
+            $rules = [
+                'from_position'       => 'required|numeric|min:0|max:4',
+                'to_position'       => 'required|numeric|min:0|max:4',
+            ];
+
+            $custommgs = [
+                'from_position.required' => 'From position is required',
+                'to_position.required'   => 'To position is required',
+                'from_position.numeric'  => 'From postion numeric value',
+                'to_position.numeric'    => 'To postion numeric value',
+                'from_position.min'  => 'From position minimum value 0',
+                'to_position.min'    => 'To position minimum value 0',
+                'from_position.max'  => 'From position maximum value 4',
+                'to_position.max'    => 'To position maximum value 4',
+            ];
+
+            $validation = Validator::make($data, $rules, $custommgs);
+            if($validation->fails()){
+                return response()->json($validation->errors(), 422);
+            }
+
+
+        }else{
+            return response()->json(['status' => 'False', 'message' => 'Invalid request'], 422);
+        }
+    }
+
+
+
+
     public function update(Request $request, $id)
     {
         if($request->ismethod('post')){

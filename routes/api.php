@@ -46,6 +46,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::post('profileimage-delete', [UserController::class, 'profileimagedelete']);
 
     Route::post('profile-photo-upload', [UserController::class, 'profilephotoupload']);
+    Route::post('profile-image-moving', [UserController::class, 'profileimagemoving']);
 
 
     Route::prefix('pull')->group(function () {
