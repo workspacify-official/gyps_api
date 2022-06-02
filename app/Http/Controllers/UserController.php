@@ -13,7 +13,7 @@ class UserController extends Controller
 
     public function getuser()
     {
-        $user_id =  Auth::user()->id;
+        $user_id          =  Auth::user()->id;
         $data['userinfo'] = Auth::user();
         //$data['profile_photos'] = ProfileImages::where('user_id', $user_id)->get();
         return response()->json($data, 200);

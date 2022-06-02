@@ -119,13 +119,13 @@ class PostController extends Controller
 
             $mypost = new MyPost();
 
-            $mypost->user_id = $request->user_id;
+            $mypost->user_id = Auth::id();
             $mypost->title = $request->post_title;
             $mypost->description = $request->description;
             $mypost->location_id = $request->location_id;
 
             if ($request->tag_freinds) {
-                $mypost->tag_freinds = implode(',', json_decode($request->tag_freinds, true));
+                $mypost->tag_freinds = implode(',', $request->tag_freinds, true);
             }
 
             if ($request->hasFile('audio')) {
@@ -182,7 +182,7 @@ class PostController extends Controller
     
     public function show($id)
     {
-        $data['post'] = MyPost::find($id);
+        $data['post']   = MyPost::find($id);
         $data['images'] = PostImages::where('post_id', $id)->get();
         return response()->json($data, 200);
     }

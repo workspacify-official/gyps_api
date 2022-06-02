@@ -9,6 +9,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PullController;
+use App\Http\Controllers\CommentController;
 
 
 /*
@@ -29,6 +30,7 @@ use App\Http\Controllers\PullController;
 Route::middleware(['auth:api'])->group(function () {
 
     Route::get('/user', [UserController::class, 'getuser']);
+    
     Route::post('/my-post', [PostController::class, 'store']);
 
     Route::post('post-update/{id}', [PostController::class, 'update']);
@@ -55,6 +57,11 @@ Route::middleware(['auth:api'])->group(function () {
         Route::get('/edit/{id}', [PullController::class, 'edit']);
         Route::post('/update/{id}', [PullController::class, 'update']);
         Route::get('/delete/{id}', [PullController::class, 'delete']);
+    });
+
+    Route::prefix('comment')->group(function () {
+        Route::get('/', [CommentController::class, 'index']);
+        Route::post('/store', [CommentController::class, 'store']);
     });
 
 
@@ -115,3 +122,4 @@ Route::prefix('admin')->group(function () {
     });
 
 });
+
