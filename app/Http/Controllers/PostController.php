@@ -125,7 +125,7 @@ class PostController extends Controller
             $mypost->location_id = $request->location_id;
 
             if ($request->tag_freinds) {
-                $mypost->tag_freinds = implode(',', $request->tag_freinds);
+                $mypost->tag_freinds = implode(',', json_decode($request->tag_freinds), true);
             }
 
             if ($request->hasFile('audio')) {
