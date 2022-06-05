@@ -221,59 +221,10 @@ class PostController extends Controller
             if ($request->tag_freinds[0] != null) {
                 $mypost->tag_freinds = $request->tag_freinds;
             }
-
-            if ($request->hasFile('audio')) {
-                $audio_name = time() . $request->file('audio')->getClientOriginalName();
-                $request->file('audio')->move(public_path('audio'), $audio_name);
-                $mypost->audio = $audio_name;
-            }
-
-            if ($request->hasFile('video')) {
-                $video_name = time() . $request->file('video')->getClientOriginalName();
-                $request->file('video')->move(public_path('video'), $video_name);
-                $mypost->video = $video_name;
-            }
+            
             $mypost->save();
            
-            $image_data = array();
-            $images_names = array();
-
-            $post_images = PostImages::where('post_id', '=', $id)->get();
-            foreach ($post_images as $v) {
-                if (file_exists(public_path('post_images/' . $v->file_name))) {
-                    unlink(public_path('post_images/' . $v->file_name));
-                }
-
-                if (file_exists(public_path('post_images/orginal/' . $v->file_name))) {
-                    unlink(public_path('post_images/orginal/' . $v->file_name));
-                }
-
-            }
-
-          PostImages::where('post_id', $id)->delete();
-
-
-            $destinationPath = public_path('/post_images');
-            
-            if ($request->hasFile('images')) {
-                $files = $request->file('images');
-                foreach ($request->file('images') as $file) {
-                    $imagessave = new PostImages();
-                    $name = time() . $file->getClientOriginalName();
-
-
-                    $imgFile = Image::make($file->getRealPath());
-                    $imgFile->resize(500, 500, function ($constraint) {
-                    $constraint->aspectRatio();
-                    })->save($destinationPath . '/' . $name);
-
-                    $file->move(public_path('post_images/orginal'), $name);
-                    $imagessave->post_id = $id;
-                    $imagessave->file_url = asset('public/post_images/' . $name);
-                    $imagessave->file_name = $name;
-                    $imagessave->save();
-                }
-            }
+        
             $messages = "Data has been updated success";
             return response()->json(['success' => $messages], 200);
         }
