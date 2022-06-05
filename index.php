@@ -1,6 +1,8 @@
 <?php
 
-// test git
+ini_set( 'upload_max_size' , '120M' );
+ini_set( 'post_max_size', '120M');
+ini_set( 'max_execution_time', '600000' );
 
 /**
  * Laravel - A PHP Framework For Web Artisans

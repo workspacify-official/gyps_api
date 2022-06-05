@@ -124,9 +124,9 @@ class PostController extends Controller
             $mypost->description = $request->description;
             $mypost->location_id = $request->location_id;
 
-            // if ($request->tag_freinds) {
-            //     $mypost->tag_freinds = $request->tag_freinds;
-            // }
+            if ($request->tag_freinds) {
+                $mypost->tag_freinds = $request->tag_freinds;
+            }
 
             if ($request->hasFile('audio')) {
                 $audio_name = time() . $request->file('audio')->getClientOriginalName();
@@ -219,7 +219,7 @@ class PostController extends Controller
             $mypost->location_id = $request->location_id;
 
             if ($request->tag_freinds[0] != null) {
-                $mypost->tag_freinds = implode(',', json_decode($request->tag_freinds, true));
+                $mypost->tag_freinds = $request->tag_freinds;
             }
 
             if ($request->hasFile('audio')) {
