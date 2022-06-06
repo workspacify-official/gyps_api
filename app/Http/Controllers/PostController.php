@@ -125,7 +125,7 @@ class PostController extends Controller
             $mypost->location_id = $request->location_id;
 
             if ($request->tag_freinds) {
-                $mypost->tag_freinds = $request->tag_freinds;
+                $mypost->tag_freinds = implode(',', json_decode($request->tag_freinds));
             }
 
             if ($request->hasFile('audio')) {
@@ -187,15 +187,9 @@ class PostController extends Controller
         return response()->json($data, 200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+        
     }
 
     /**
@@ -218,8 +212,8 @@ class PostController extends Controller
             $mypost->description = $request->description;
             $mypost->location_id = $request->location_id;
 
-            if ($request->tag_freinds[0] != null) {
-                $mypost->tag_freinds = $request->tag_freinds;
+            if ($request->tag_freinds) {
+                $mypost->tag_freinds = implode(',', json_decode($request->tag_freinds));
             }
             
             $mypost->save();
