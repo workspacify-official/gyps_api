@@ -10,22 +10,9 @@ use App\Http\Controllers\PublicController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PullController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\FollowerController;
 
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
- */
-
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return Auth::user();
-// });
 
 Route::middleware(['auth:api'])->group(function () {
 
@@ -58,6 +45,16 @@ Route::middleware(['auth:api'])->group(function () {
         Route::post('/update/{id}', [PullController::class, 'update']);
         Route::get('/delete/{id}', [PullController::class, 'delete']);
     });
+
+     Route::prefix('follower')->group(function () {
+        Route::get('/', [FollowerController::class, 'index']);
+        Route::post('/store', [FollowerController::class, 'store']);
+        Route::get('/edit/{id}', [FollowerController::class, 'edit']);
+        Route::post('/update/{id}', [FollowerController::class, 'update']);
+        Route::get('/delete/{id}', [FollowerController::class, 'delete']);
+    });
+    
+
 
     Route::prefix('comment')->group(function () {
         Route::get('/', [CommentController::class, 'index']);
