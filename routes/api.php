@@ -15,20 +15,16 @@ use App\Http\Controllers\FollowerController;
 
 
 Route::middleware(['auth:api'])->group(function () {
-
     Route::get('/user', [UserController::class, 'getuser']);
-    
     Route::post('/my-post', [PostController::class, 'store']);
-
     Route::post('post-update/{id}', [PostController::class, 'update']);
-
     Route::get('/get-post', [PostController::class, 'index']);
     Route::get('/mygetpost', [PostController::class, 'mypost']);
+    
+    Route::get('/followingpost', [PostController::class, 'followingpost']);
 
     Route::get('/post-edit/{id}', [PostController::class, 'show']);
-
     Route::get('post-delete/{id}', [PostController::class, 'post_delete']);
-
   
     Route::get('/post-view/{id}', [PostController::class, 'post_view']);
     Route::post('/profile-update/{id}', [UserController::class, 'update']);
@@ -49,9 +45,7 @@ Route::middleware(['auth:api'])->group(function () {
      Route::prefix('follower')->group(function () {
         Route::get('/', [FollowerController::class, 'index']);
         Route::post('/store', [FollowerController::class, 'store']);
-        
         Route::post('/unfollowing', [FollowerController::class, 'unfollowing']);
-
         Route::post('/update/{id}', [FollowerController::class, 'update']);
         Route::get('/delete/{id}', [FollowerController::class, 'delete']);
     });

@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\MyPost;
 use App\Models\PostImages;
+use App\Models\Follower;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -45,6 +46,24 @@ class PostController extends Controller
         return response()->json($postdata, 200);
 
     }
+
+
+    public function followingpost()
+    {
+        $user_id      = Auth::id();
+        $followersids      = Follower::where('user_id', $user_id)->pluck('following_id');
+      $postdata = MyPost::whereIn("my_posts.user_id", $followersids)
+            ->leftjoin('users', 'users.id', '=', 'my_posts.user_id')
+            ->leftjoin('divisions', 'divisions.id', '=', 'my_posts.location_id')
+            ->select('my_posts.id', 'my_posts.title', 'my_posts.audio', 'my_posts.location_id', 'my_posts.video', 'my_posts.views', 'my_posts.share', 'my_posts.heart', 'my_posts.diamond', 'my_posts.description', 'my_posts.created_at', 'users.name', 'users.photo', 'divisions.division_name')
+            ->with('images')
+            ->with('comments.user:id,name','comments.replies.user:id,name', 'comments.replies.replies.user:id,name','comments.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.replies.replies.user:id,name')
+            ->orderBy('id', 'DESC')
+            ->paginate(5);
+    return response()->json($postdata, 200);
+
+    }
+
 
     public function post_delete($id)
     {
