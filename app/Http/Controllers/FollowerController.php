@@ -66,9 +66,32 @@ class FollowerController extends Controller
     }
 
   
-    public function update(Request $request, $id)
+    public function unfollowing(Request $request)
     {
-        
+        if($request->isMethod('post')){
+            
+            $user_id = Auth::user()->id;
+
+            $dataall = $request->all();
+            $rules = ['following_id' => 'required|integer'];
+            $messages = [
+                'following_id.required' => 'Following id is required',
+                'following_id.integer' => 'Following id is invalid',
+            ];
+
+            $validations  = Validator::make($dataall, $rules, $messages);
+
+            if($validations->fails()){
+                return response()->json($validations->errors(), 422);
+            }
+
+            $following_id  = $request->id;
+            Follower::where('user_id', $user_id)->where('following_id', $following_id)->delete();
+            return response()->json(['status' => 'success', 'messages' => 'Unfollower success'], 200);
+
+        }else{
+            return response()->json(['messages' => 'Invalid request'], 422);
+        }
     }
 
     /**
