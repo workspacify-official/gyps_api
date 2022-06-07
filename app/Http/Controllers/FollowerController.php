@@ -12,20 +12,19 @@ class FollowerController extends Controller
    
     public function index()
     {
-        //
-    }
+        $user_id = Auth::user()->id;
+        $data['following'] = Follower::where('user_id', $user_id)->count();
+        $data['follome'] = Follower::where('following_id', $user_id)->count();
+        return response()->json($data, 200);
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    }
+    
     public function create()
     {
         
     }
 
-    
+
     public function store(Request $request)
     {
         if($request->isMethod('post')){
@@ -85,8 +84,10 @@ class FollowerController extends Controller
                 return response()->json($validations->errors(), 422);
             }
 
-            $following_id  = $request->id;
+            $following_id  = $request->following_id;
+           
             Follower::where('user_id', $user_id)->where('following_id', $following_id)->delete();
+
             return response()->json(['status' => 'success', 'messages' => 'Unfollower success'], 200);
 
         }else{

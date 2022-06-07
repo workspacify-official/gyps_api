@@ -49,7 +49,9 @@ Route::middleware(['auth:api'])->group(function () {
      Route::prefix('follower')->group(function () {
         Route::get('/', [FollowerController::class, 'index']);
         Route::post('/store', [FollowerController::class, 'store']);
+        
         Route::post('/unfollowing', [FollowerController::class, 'unfollowing']);
+
         Route::post('/update/{id}', [FollowerController::class, 'update']);
         Route::get('/delete/{id}', [FollowerController::class, 'delete']);
     });
