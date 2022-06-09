@@ -3,6 +3,7 @@
 use App\Http\Controllers\admin\DivisionController;
 use App\Http\Controllers\admin\EmojiController;
 use App\Http\Controllers\admin\LanguageController;
+use App\Http\Controllers\admin\CommunityController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PostController;
@@ -11,7 +12,6 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PullController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FollowerController;
-
 
 
 Route::middleware(['auth:api'])->group(function () {
@@ -64,9 +64,7 @@ Route::middleware(['auth:api'])->group(function () {
 Route::get('/getCountry', [CountryController::class, 'index']);
 Route::get('/getdivision/{id}', [CountryController::class, 'getdivision']);
 Route::get('/getlang', [PublicController::class, 'getlang']);
-
 Route::get('/emoji', [PublicController::class, 'emoji']);
-
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/add-user', [LoginController::class, 'addUser']);
 Route::post('/sendemail', [LoginController::class, 'email_send']);
@@ -113,6 +111,17 @@ Route::prefix('admin')->group(function () {
         Route::post('/update/{id}', [EmojiController::class, 'update']);
         Route::get('/delete/{id}', [EmojiController::class, 'delete']);
     });
+
+
+    Route::prefix('community')->group(function () {
+        Route::get('/', [CommunityController::class, 'index']);
+        Route::post('/store', [CommunityController::class, 'store']);
+        Route::get('/edit/{id}', [CommunityController::class, 'edit']);
+        Route::post('/update/{id}', [CommunityController::class, 'update']);
+        Route::get('/delete/{id}', [CommunityController::class, 'delete']);
+    });
+
+
 
 });
 
