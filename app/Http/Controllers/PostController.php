@@ -64,6 +64,33 @@ class PostController extends Controller
 
     }
 
+    public function communityhost($id)
+    {
+        $postdata = MyPost::where("my_posts.community_id", $id)
+            ->leftjoin('users', 'users.id', '=', 'my_posts.user_id')
+            ->leftjoin('divisions', 'divisions.id', '=', 'my_posts.location_id')
+            ->select('my_posts.id', 'my_posts.title', 'my_posts.audio', 'my_posts.location_id', 'my_posts.video', 'my_posts.views', 'my_posts.share', 'my_posts.heart', 'my_posts.diamond', 'my_posts.description', 'my_posts.created_at', 'users.name', 'users.photo', 'divisions.division_name')
+            ->with('images')
+            ->with('comments.user:id,name','comments.replies.user:id,name', 'comments.replies.replies.user:id,name','comments.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.replies.replies.user:id,name')
+            ->orderBy('id', 'DESC')
+            ->skip(10)->paginate(5);
+        return response()->json($postdata, 200);
+    }
+
+    public function communitynew($id)
+    {
+            $postdata = MyPost::where("my_posts.community_id", $id)
+            ->leftjoin('users', 'users.id', '=', 'my_posts.user_id')
+            ->leftjoin('divisions', 'divisions.id', '=', 'my_posts.location_id')
+            ->select('my_posts.id', 'my_posts.title', 'my_posts.audio', 'my_posts.location_id', 'my_posts.video', 'my_posts.views', 'my_posts.share', 'my_posts.heart', 'my_posts.diamond', 'my_posts.description', 'my_posts.created_at', 'users.name', 'users.photo', 'divisions.division_name')
+            ->with('images')
+            ->with('comments.user:id,name','comments.replies.user:id,name', 'comments.replies.replies.user:id,name','comments.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.replies.replies.user:id,name')
+            ->orderBy('id', 'DESC')
+            ->offset(0)->limit(10)->get();
+        return response()->json($postdata, 200);
+    }
+
+
 
     public function post_delete($id)
     {

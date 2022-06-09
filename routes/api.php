@@ -27,9 +27,11 @@ Route::middleware(['auth:api'])->group(function () {
 
     // community
     Route::get('community', [CommunityController::class, 'index']);
+    Route::get('community-hot-post/{id}', [PostController::class, 'communityhost']);
+    Route::get('community-new-post/{id}', [PostController::class, 'communitynew']);
 
 
-  
+
     Route::get('/post-view/{id}', [PostController::class, 'post_view']);
     Route::post('/profile-update/{id}', [UserController::class, 'update']);
     Route::post('profileimage-delete', [UserController::class, 'profileimagedelete']);
