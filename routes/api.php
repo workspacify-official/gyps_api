@@ -22,9 +22,13 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('/mygetpost', [PostController::class, 'mypost']);
     
     Route::get('/followingpost', [PostController::class, 'followingpost']);
-
     Route::get('/post-edit/{id}', [PostController::class, 'show']);
     Route::get('post-delete/{id}', [PostController::class, 'post_delete']);
+
+    // community
+    Route::get('community', [CommunityController::class, 'index']);
+
+
   
     Route::get('/post-view/{id}', [PostController::class, 'post_view']);
     Route::post('/profile-update/{id}', [UserController::class, 'update']);

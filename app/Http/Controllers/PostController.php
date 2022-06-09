@@ -141,8 +141,9 @@ class PostController extends Controller
 
             $mypost->user_id = Auth::id();
             $mypost->title = $request->post_title;
-            $mypost->description = $request->description;
-            $mypost->location_id = $request->location_id;
+            $mypost->description  = $request->description;
+            $mypost->location_id  = $request->location_id;
+            $mypost->community_id = $request->community_id;
 
             if ($request->tag_freinds) {
                 $mypost->tag_freinds = implode(',', json_decode($request->tag_freinds));
@@ -228,9 +229,10 @@ class PostController extends Controller
             $mypost = MyPost::find($id);
 
     
-            $mypost->title       = $request->post_title;
-            $mypost->description = $request->description;
-            $mypost->location_id = $request->location_id;
+            $mypost->title        = $request->post_title;
+            $mypost->description  = $request->description;
+            $mypost->location_id  = $request->location_id;
+            $mypost->community_id = $request->community_id;
 
             if ($request->tag_freinds) {
                 $mypost->tag_freinds = implode(',', json_decode($request->tag_freinds));

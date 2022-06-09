@@ -21,6 +21,7 @@ class CreateMyPostsTable extends Migration
             $table->bigInteger('diamond')->nullable();
             $table->string('audio', 222)->nullable();
             $table->string('video', 222)->nullable();
+            $table->bigInteger('community_id')->nullable();
             $table->enum('post_status', ['1', '0'])->default('1');
             $table->ipAddress('post_ip');
             $table->date('input_date');
