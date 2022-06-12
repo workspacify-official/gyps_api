@@ -63,7 +63,7 @@ class CommunityController extends Controller
           
             if($request->hasFile('photo')){
             $photo_file = time().$request->file('photo')->getClientOriginalName();
-            $request->file('photo')->move(public_path('community'), $photo_file);
+            $request->file('photo')->move(public_path('communitys'), $photo_file);
             $datasave->photo = $photo_file;
             }
 
