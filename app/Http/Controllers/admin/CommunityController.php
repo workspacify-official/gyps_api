@@ -73,11 +73,11 @@ class CommunityController extends Controller
             // $datasave->photo        = $file_name;
             // }
 
-            // if($request->hasFile('backgound_image')){
-            // $background_name = time().$request->file('backgound_image')->getClientOriginalName();
-            // $request->file('backgound_image')->move(public_path('community'), $background_name);
-            // $datasave->backgound_image        = $background_name;
-            // }
+            if($request->hasFile('backgound_image')){
+            $background_name = time().$request->file('backgound_image')->getClientOriginalName();
+            $request->file('backgound_image')->move(public_path('communitys'), $background_name);
+            $datasave->backgound_image        = $background_name;
+            }
 
             $datasave->save();
             return response()->json(['status' => 'success', 'messages' => 'Data has been saved success'], 200);
