@@ -20,14 +20,15 @@ class PostController extends Controller
      */
     public function index()
     {
-
+        $user_id = Auth::id();
         $postdata = MyPost::leftjoin('users', 'users.id', '=', 'my_posts.user_id')
             ->leftjoin('divisions', 'divisions.id', '=', 'my_posts.location_id')
-            ->select('my_posts.id', 'my_posts.user_id', 'my_posts.title', 'my_posts.audio', 'my_posts.location_id', 'my_posts.video', 'my_posts.views', 'my_posts.share', 'my_posts.heart', 'my_posts.diamond', 'my_posts.description', 'my_posts.created_at', 'users.name', 'users.photo', 'divisions.division_name')
+            ->join('followers', 'followers.following_id', '=', 'my_posts.user_id','followers.user_id', '=', $user_id)
+            ->select('my_posts.id', 'my_posts.user_id', 'my_posts.title', 'my_posts.audio', 'my_posts.location_id', 'my_posts.video', 'my_posts.views', 'my_posts.share', 'my_posts.heart', 'my_posts.diamond', 'my_posts.description', 'my_posts.created_at', 'users.name', 'users.photo', 'divisions.division_name,followers.user_id as follower_id')
             ->with('images')
             ->with('comments.user:id,name','comments.replies.user:id,name', 'comments.replies.replies.user:id,name','comments.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.replies.replies.user:id,name')
             ->orderBy('id', 'DESC')
-            ->paginate(2);
+            ->paginate(5);
            return response()->json($postdata, 200);
 
     }
@@ -86,10 +87,22 @@ class PostController extends Controller
             ->with('images')
             ->with('comments.user:id,name','comments.replies.user:id,name', 'comments.replies.replies.user:id,name','comments.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.replies.replies.user:id,name')
             ->orderBy('id', 'DESC')
-            ->offset(0)->limit(10)->get();
+            ->offset(0)->limit(10)->paginate(5);
         return response()->json($postdata, 200);
     }
 
+    public function communityallpost($id)
+    {
+            $postdata = MyPost::where("my_posts.community_id", $id)
+            ->leftjoin('users', 'users.id', '=', 'my_posts.user_id')
+            ->leftjoin('divisions', 'divisions.id', '=', 'my_posts.location_id')
+            ->select('my_posts.id', 'my_posts.user_id', 'my_posts.title', 'my_posts.audio', 'my_posts.location_id', 'my_posts.video', 'my_posts.views', 'my_posts.share', 'my_posts.heart', 'my_posts.diamond', 'my_posts.description', 'my_posts.created_at', 'users.name', 'users.photo', 'divisions.division_name')
+            ->with('images')
+            ->with('comments.user:id,name','comments.replies.user:id,name', 'comments.replies.replies.user:id,name','comments.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.replies.replies.user:id,name')
+            ->orderBy('id', 'DESC')
+            ->paginate(10);
+        return response()->json($postdata, 200);
+    }
 
 
     public function post_delete($id)

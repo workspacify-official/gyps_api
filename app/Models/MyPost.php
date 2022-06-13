@@ -25,4 +25,9 @@ class MyPost extends Model
         return $this->hasMany(Comments::class, 'post_id')->whereNull('parent_id');
     }
 
+    
+
+
+
+
 }
