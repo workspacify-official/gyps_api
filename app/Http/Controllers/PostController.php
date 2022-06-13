@@ -23,10 +23,10 @@ class PostController extends Controller
         $user_id = Auth::id();
         $postdata = MyPost::leftjoin('users', 'users.id', '=', 'my_posts.user_id')
             ->leftjoin('divisions', 'divisions.id', '=', 'my_posts.location_id')
-            ->join('followers', 'followers.following_id', '=', 'my_posts.user_id','followers.user_id', '=', $user_id)
-            ->select('my_posts.id', 'my_posts.user_id', 'my_posts.title', 'my_posts.audio', 'my_posts.location_id', 'my_posts.video', 'my_posts.views', 'my_posts.share', 'my_posts.heart', 'my_posts.diamond', 'my_posts.description', 'my_posts.created_at', 'users.name', 'users.photo', 'divisions.division_name,followers.user_id as follower_id')
+            ->select('my_posts.id', 'my_posts.user_id', 'my_posts.title', 'my_posts.audio', 'my_posts.location_id', 'my_posts.video', 'my_posts.views', 'my_posts.share', 'my_posts.heart', 'my_posts.diamond', 'my_posts.description', 'my_posts.created_at', 'users.name', 'users.photo', 'divisions.division_name')
             ->with('images')
             ->with('comments.user:id,name','comments.replies.user:id,name', 'comments.replies.replies.user:id,name','comments.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.replies.replies.user:id,name')
+            ->withCount('followingcheck')->where('user_id', $user_id)
             ->orderBy('id', 'DESC')
             ->paginate(5);
            return response()->json($postdata, 200);
