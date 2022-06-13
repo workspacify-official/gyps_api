@@ -28,8 +28,8 @@ class PostController extends Controller
             ->with('comments.user:id,name','comments.replies.user:id,name', 'comments.replies.replies.user:id,name','comments.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.replies.replies.user:id,name')
             //->withCount('followingcheck')->where('user_id', $user_id)
             ->withCount(['followingcheck', 
-                        'followingcheck' => function ($query, $user_id) {
-                            $query->where('followers.user_id', $user_id);
+                        'followingcheck' => function ($query) {
+                            $query->where('followers.user_id', 1);
                         }])
             ->orderBy('id', 'DESC')
             ->paginate(5);
