@@ -29,7 +29,7 @@ class PostController extends Controller
             //->withCount('followingcheck')->where('user_id', $user_id)
             ->withCount(['followingcheck', 
                         'followingcheck' => function ($query) {
-                            $query->where('user_id', '>', $user_id);
+                            $query->where('followers.user_id', '>', $user_id);
                         }])
             ->orderBy('id', 'DESC')
             ->paginate(5);
