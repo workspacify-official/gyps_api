@@ -29,7 +29,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('community', [CommunityController::class, 'index']);
     Route::get('community-hot-post/{id}', [PostController::class, 'communityhost']);
     Route::get('community-new-post/{id}', [PostController::class, 'communitynew']);
-    Route::get('community-allpost/{id}', [PostController::class, 'communityallpost']);
+    Route::get('community-allpost', [PostController::class, 'communityallpost']);
 
 
 
