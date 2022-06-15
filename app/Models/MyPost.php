@@ -37,6 +37,11 @@ class MyPost extends Model
        return $this->hasMany(Comments::class, 'post_id', 'id'); 
     }
 
+    public function like_count()
+    {
+       return $this->hasMany(Like::class, 'post_id', 'id'); 
+    }
+
 
 
 

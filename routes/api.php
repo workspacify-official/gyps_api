@@ -12,6 +12,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PullController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FollowerController;
+use App\Http\Controllers\LikeController;
 
 
 Route::middleware(['auth:api'])->group(function () {
@@ -64,6 +65,11 @@ Route::middleware(['auth:api'])->group(function () {
     Route::prefix('comment')->group(function () {
         Route::get('/', [CommentController::class, 'index']);
         Route::post('/store', [CommentController::class, 'store']);
+    });
+
+    Route::prefix('like')->group(function () {
+        Route::get('/', [LikeController::class, 'index']);
+        Route::post('/store', [LikeController::class, 'store']);
     });
 
 
