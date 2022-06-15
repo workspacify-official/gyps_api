@@ -34,6 +34,8 @@ Route::middleware(['auth:api'])->group(function () {
 
 
     Route::get('/post-view/{id}', [PostController::class, 'post_view']);
+    Route::get('/post-share/{id}', [PostController::class, 'share_count']);
+
     Route::post('/profile-update/{id}', [UserController::class, 'update']);
     Route::post('profileimage-delete', [UserController::class, 'profileimagedelete']);
 

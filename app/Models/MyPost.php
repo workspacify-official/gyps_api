@@ -32,6 +32,12 @@ class MyPost extends Model
     }
 
 
+    public function comments_count()
+    {
+       return $this->hasMany(Comments::class, 'post_id', 'id'); 
+    }
+
+
 
 
 

@@ -23,8 +23,10 @@ class PostController extends Controller
         $user_id = Auth::id();
         $postdata = MyPost::leftjoin('users', 'users.id', '=', 'my_posts.user_id')
             ->leftjoin('divisions', 'divisions.id', '=', 'my_posts.location_id')
-            ->select('my_posts.id', 'my_posts.user_id', 'my_posts.title', 'my_posts.audio', 'my_posts.location_id', 'my_posts.video', 'my_posts.views', 'my_posts.share', 'my_posts.heart', 'my_posts.diamond', 'my_posts.description', 'my_posts.created_at', 'users.name', 'users.photo', 'divisions.division_name')
+            ->select('my_posts.id', 'my_posts.user_id', 'my_posts.title',
+             'my_posts.audio', 'my_posts.location_id', 'my_posts.video', 'my_posts.views', 'my_posts.share', 'my_posts.heart', 'my_posts.diamond', 'my_posts.description', 'my_posts.created_at', 'users.name', 'users.photo', 'divisions.division_name')
             ->with('images')
+            ->withCount('comments_count')
             ->with('comments.user:id,name','comments.replies.user:id,name', 'comments.replies.replies.user:id,name','comments.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.replies.replies.user:id,name')
             ->withCount(['followingcheck', 
                         'followingcheck' => function ($query) {
@@ -44,6 +46,7 @@ class PostController extends Controller
             ->leftjoin('divisions', 'divisions.id', '=', 'my_posts.location_id')
             ->select('my_posts.id', 'my_posts.user_id', 'my_posts.title', 'my_posts.audio', 'my_posts.location_id', 'my_posts.video', 'my_posts.views', 'my_posts.share', 'my_posts.heart', 'my_posts.diamond', 'my_posts.description', 'my_posts.created_at', 'users.name', 'users.photo', 'divisions.division_name')
             ->with('images')
+            ->withCount('comments_count')
             ->with('comments.user:id,name','comments.replies.user:id,name', 'comments.replies.replies.user:id,name','comments.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.replies.replies.user:id,name')
             ->withCount(['followingcheck', 
                 'followingcheck' => function ($query) {
@@ -65,6 +68,7 @@ class PostController extends Controller
             ->leftjoin('divisions', 'divisions.id', '=', 'my_posts.location_id')
             ->select('my_posts.id', 'my_posts.user_id', 'my_posts.title', 'my_posts.audio', 'my_posts.location_id', 'my_posts.video', 'my_posts.views', 'my_posts.share', 'my_posts.heart', 'my_posts.diamond', 'my_posts.description', 'my_posts.created_at', 'users.name', 'users.photo', 'divisions.division_name')
             ->with('images')
+            ->withCount('comments_count')
             ->with('comments.user:id,name','comments.replies.user:id,name', 'comments.replies.replies.user:id,name','comments.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.replies.replies.user:id,name')
             ->withCount(['followingcheck', 
                 'followingcheck' => function ($query) {
@@ -83,6 +87,7 @@ class PostController extends Controller
             ->leftjoin('divisions', 'divisions.id', '=', 'my_posts.location_id')
             ->select('my_posts.id', 'my_posts.user_id', 'my_posts.title', 'my_posts.audio', 'my_posts.location_id', 'my_posts.video', 'my_posts.views', 'my_posts.share', 'my_posts.heart', 'my_posts.diamond', 'my_posts.description', 'my_posts.created_at', 'users.name', 'users.photo', 'divisions.division_name')
             ->with('images')
+            ->withCount('comments_count')
             ->with('comments.user:id,name','comments.replies.user:id,name', 'comments.replies.replies.user:id,name','comments.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.replies.replies.user:id,name')
             ->withCount(['followingcheck', 
                         'followingcheck' => function ($query) {
@@ -100,6 +105,7 @@ class PostController extends Controller
             ->leftjoin('divisions', 'divisions.id', '=', 'my_posts.location_id')
             ->select('my_posts.id', 'my_posts.user_id', 'my_posts.title', 'my_posts.audio', 'my_posts.location_id', 'my_posts.video', 'my_posts.views', 'my_posts.share', 'my_posts.heart', 'my_posts.diamond', 'my_posts.description', 'my_posts.created_at', 'users.name', 'users.photo', 'divisions.division_name')
             ->with('images')
+            ->withCount('comments_count')
             ->with('comments.user:id,name','comments.replies.user:id,name', 'comments.replies.replies.user:id,name','comments.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.replies.replies.user:id,name')
             ->withCount(['followingcheck', 
             'followingcheck' => function ($query) {
@@ -117,6 +123,7 @@ class PostController extends Controller
             ->leftjoin('divisions', 'divisions.id', '=', 'my_posts.location_id')
             ->select('my_posts.id', 'my_posts.user_id', 'my_posts.title', 'my_posts.audio', 'my_posts.location_id', 'my_posts.video', 'my_posts.views', 'my_posts.share', 'my_posts.heart', 'my_posts.diamond', 'my_posts.description', 'my_posts.created_at', 'users.name', 'users.photo', 'divisions.division_name')
             ->with('images')
+            ->withCount('comments_count')
             ->with('comments.user:id,name','comments.replies.user:id,name', 'comments.replies.replies.user:id,name','comments.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.replies.replies.user:id,name')
             ->withCount(['followingcheck', 
                 'followingcheck' => function ($query) {
@@ -178,6 +185,13 @@ class PostController extends Controller
         MyPost::find($id)->increment('views');
         exit();
     }
+
+    public function share_count($id)
+    {
+        MyPost::find($id)->increment('share');
+        exit();
+    }
+
 
     public function store(Request $request)
     {
