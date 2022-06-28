@@ -93,7 +93,7 @@ class LoginController extends Controller
                 return response()->json($validator->errors(), 422);
             }
 
-            $user = new User;
+            $user = new User();
             $user->name = $request->username;
             $user->email = $request->email;
             $user->country_id = $request->country_id;

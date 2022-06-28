@@ -13,6 +13,7 @@ use App\Http\Controllers\PullController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\LiveRoomController;
 
 
 Route::middleware(['auth:api'])->group(function () {
@@ -32,7 +33,10 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('community-new-post/{id}', [PostController::class, 'communitynew']);
     Route::get('community-allpost', [PostController::class, 'communityallpost']);
 
+    
+    //  live room create
 
+    Route::post('live-room-create', [LiveRoomController::class, 'store']);
 
     Route::get('/post-view/{id}', [PostController::class, 'post_view']);
     Route::get('/post-share/{id}', [PostController::class, 'share_count']);
@@ -75,7 +79,6 @@ Route::middleware(['auth:api'])->group(function () {
 
 });
 //PostController
-
 Route::get('/getCountry', [CountryController::class, 'index']);
 Route::get('/getdivision/{id}', [CountryController::class, 'getdivision']);
 Route::get('/getlang', [PublicController::class, 'getlang']);
