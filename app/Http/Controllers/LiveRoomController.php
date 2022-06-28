@@ -19,7 +19,7 @@ class LiveRoomController extends Controller
     public function index()
     {
         $roomlist = LiveRoom::leftJoin('users', 'users.id', '=', 'live_rooms.user_id')
-                            ->select('live_rooms.*', 'users.name')
+                            ->select('live_rooms.*', 'users.name', 'users.email')
                             ->paginate(10);
         return response()->json($roomlist, 200);
     }
@@ -29,9 +29,24 @@ class LiveRoomController extends Controller
     {
         $members = live_rooms_participant::where('room_id', $id)
                                         ->leftJoin('users', 'users.id', '=', 'live_rooms_participants.user_id')
-                                        ->select('live_rooms_participants.*', 'users.name')
+                                        ->select('live_rooms_participants.*', 'users.name', 'users.email')
                                         ->get();
         return response()->json($members, 200);
+    }
+
+
+    public function memberleave($id)
+    {
+        live_rooms_participant::where('room_id', $id)->where('live_rooms_participants.user_id', Auth::user()->id)->delete();
+        return response()->json(['status' => 'success', 'message' => 'Leave success'], 200);
+    }
+
+
+    public function hostmemberleave($id)
+    {
+        LiveRoom::find($id)->delete();
+        live_rooms_participant::where('room_id', $id)->delete();
+        return response()->json(['status' => 'success', 'message' => 'Leave success'], 200);
     }
 
 
