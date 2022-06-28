@@ -24,12 +24,49 @@ class LiveRoomController extends Controller
         return response()->json($roomlist, 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
+    public function members($id)
+    {
+        $members = live_rooms_participant::where('room_id', $id)
+                                        ->leftJoin('users', 'users.id', '=', 'live_rooms_participants.user_id')
+                                        ->select('live_rooms_participants.*', 'users.name')
+                                        ->get();
+        return response()->json($members, 200);
+    }
+
+
+    public function live_room_join(Request $request)
+    {
+        if ($request->ismethod('post')) {
+
+            $data = $request->all();
+
+            $rules = [
+                'room_id' => 'required',
+            ];
+
+            $customMessage = [
+                'room_id.required' => 'Room ID is required',
+            ];
+
+            $validator = Validator::make($data, $rules, $customMessage);
+            if ($validator->fails()) {
+                return response()->json($validator->errors(), 422);
+            }
+
+            $datasave = new live_rooms_participant();
+            $datasave->room_id = $request->room_id;
+            $datasave->user_id = Auth::user()->id;
+            $datasave->save();
+            return response()->json(['status' => 'success', 'messages' => 'Join success'], 200);
+
+
+        }else{
+            return response()->json(['message' => 'Invalid'], 201);
+        }
+    }
+
+
     public function store(Request $request)
     {
         if ($request->ismethod('post')) {

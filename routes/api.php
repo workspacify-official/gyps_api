@@ -38,6 +38,8 @@ Route::middleware(['auth:api'])->group(function () {
 
     Route::post('live-room-create', [LiveRoomController::class, 'store']);
     Route::get('live-room', [LiveRoomController::class, 'index']);
+    Route::post('live-room-join', [LiveRoomController::class, 'live_room_join']);
+    Route::get('live-room-members/{id}', [LiveRoomController::class, 'members']);
 
     Route::get('/post-view/{id}', [PostController::class, 'post_view']);
     Route::get('/post-share/{id}', [PostController::class, 'share_count']);
