@@ -52,7 +52,7 @@ class LiveRoomController extends Controller
             $room->title = trim($request->title);
             $room->seat_type = trim($request->seat_type);
             if($request->tags){
-                 $room->taxvalues =  implode(',', $request->tags);
+                // $room->taxvalues =  implode(',', $request->tags);
             }
             $room->visitor      = $request->ip();
            
