@@ -18,7 +18,10 @@ class LiveRoomController extends Controller
      */
     public function index()
     {
-        //
+        $roomlist = LiveRoom::leftJoin('users', 'users.id', '=', 'live_rooms.user_id')
+                            ->select('live_rooms.*', 'users.name')
+                            ->paginate(10);
+        return response()->json($roomlist, 200);
     }
 
     /**

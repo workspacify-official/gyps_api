@@ -37,6 +37,7 @@ Route::middleware(['auth:api'])->group(function () {
     //  live room create
 
     Route::post('live-room-create', [LiveRoomController::class, 'store']);
+    Route::get('live-room', [LiveRoomController::class, 'index']);
 
     Route::get('/post-view/{id}', [PostController::class, 'post_view']);
     Route::get('/post-share/{id}', [PostController::class, 'share_count']);
