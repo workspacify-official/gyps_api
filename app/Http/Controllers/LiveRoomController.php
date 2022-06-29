@@ -150,8 +150,14 @@ class LiveRoomController extends Controller
             $room_partici->room_id = $room->id;
             $room_partici->user_id = Auth::user()->id;
             $room_partici->save();
+
+            $listdata['hostinfo']    = $room;
+            $listdata['members'] = live_rooms_participant::where('room_id', $request->room_id)
+                                        ->leftJoin('users', 'users.id', '=', 'live_rooms_participants.user_id')
+                                        ->select('live_rooms_participants.*', 'users.name', 'users.email')
+                                        ->get();
             $message = 'User Successfully registerd';
-            return response()->json(['message' => $message, 'room_information' => $room], 200);
+            return response()->json(['message' => $message, 'datalist' => $listdata], 200);
 
         }else{
              return response()->json(['message' => 'Invalid'], 201);
