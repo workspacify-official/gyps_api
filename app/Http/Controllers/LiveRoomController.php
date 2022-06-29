@@ -31,7 +31,7 @@ class LiveRoomController extends Controller
                                         ->leftJoin('users', 'users.id', '=', 'live_rooms_participants.user_id')
                                         ->select('live_rooms_participants.*', 'users.name', 'users.email')
                                         ->get();
-        $data['hostinfo']     = LiveRoom::find($id);      
+        $data['hostinfo']     = LiveRoom::find($id);
         return response()->json($data, 200);
     }
 
@@ -70,11 +70,29 @@ class LiveRoomController extends Controller
                 return response()->json($validator->errors(), 422);
             }
 
-            $datasave = new live_rooms_participant();
-            $datasave->room_id = $request->room_id;
-            $datasave->user_id = Auth::user()->id;
-            $datasave->save();
-            return response()->json(['status' => 'success', 'messages' => 'Join success'], 200);
+            $listdata['hostinfo']    = LiveRoom::find($request->room_id);
+
+            $totaljoin = live_rooms_participant::where('room_id', $request->room_id)->count();
+            if($totaljoin < $listdata['hostinfo']->seat_type){
+                  $datasave = new live_rooms_participant();
+                  $datasave->room_id = $request->room_id;
+                  $datasave->user_id = Auth::user()->id;
+                  $datasave->save();
+                $listdata['members'] = live_rooms_participant::where('room_id', $request->room_id)
+                                        ->leftJoin('users', 'users.id', '=', 'live_rooms_participants.user_id')
+                                        ->select('live_rooms_participants.*', 'users.name', 'users.email')
+                                        ->get();
+                return response()->json(['status' => 'success', 'exist_status' => 'false', 'datalist' => $listdata, 'messages' => 'Join success'], 200);
+
+            }else{
+                  $listdata['members'] = live_rooms_participant::where('room_id', $request->room_id)
+                                        ->leftJoin('users', 'users.id', '=', 'live_rooms_participants.user_id')
+                                        ->select('live_rooms_participants.*', 'users.name', 'users.email')
+                                        ->get();
+                    return response()->json(['status' => 'success', 'exist_status' => 'false', 'datalist' => $listdata, 'messages' => 'Join success'], 200);
+            }
+           
+
 
 
         }else{
