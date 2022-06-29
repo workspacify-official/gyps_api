@@ -27,11 +27,12 @@ class LiveRoomController extends Controller
 
     public function members($id)
     {
-        $members = live_rooms_participant::where('room_id', $id)
+        $data['members'] = live_rooms_participant::where('room_id', $id)
                                         ->leftJoin('users', 'users.id', '=', 'live_rooms_participants.user_id')
                                         ->select('live_rooms_participants.*', 'users.name', 'users.email')
                                         ->get();
-        return response()->json($members, 200);
+        $data['hostinfo']     = LiveRoom::find($id);      
+        return response()->json($data, 200);
     }
 
 
