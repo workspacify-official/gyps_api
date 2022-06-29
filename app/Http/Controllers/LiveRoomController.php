@@ -151,8 +151,8 @@ class LiveRoomController extends Controller
             $room_partici->user_id = Auth::user()->id;
             $room_partici->save();
 
-            $listdata['hostinfo']    = $room;
-            $listdata['members'] = live_rooms_participant::where('room_id', $request->room_id)
+             $listdata['hostinfo']    = LiveRoom::find($room->id);
+             $listdata['members'] = live_rooms_participant::where('room_id', $room->id)
                                         ->leftJoin('users', 'users.id', '=', 'live_rooms_participants.user_id')
                                         ->select('live_rooms_participants.*', 'users.name', 'users.email')
                                         ->get();
