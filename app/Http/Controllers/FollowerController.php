@@ -19,11 +19,27 @@ class FollowerController extends Controller
 
     }
     
-    public function create()
+    public function follow_list()
     {
-        
+        $user_id     = Auth::user()->id;
+        $follinglist = Follower::leftJoin('users', 'users.id', '=', 'followers.following_id')
+                                ->where('user_id', $user_id)
+                                ->select('followers.following_id', 'users.name', 'users.photo')
+                                ->paginate(20);
+        return response()->json($follinglist, 200);
+
     }
 
+
+    public function following_list()
+    {
+       $user_id             = Auth::user()->id;
+        $following_list = Follower::leftJoin('users', 'users.id', '=', 'followers.user_id')
+                                ->where('following_id', $user_id)
+                                ->select('followers.user_id', 'users.name', 'users.photo')
+                                ->paginate(20);
+        return response()->json($following_list, 200); 
+    }
 
     public function store(Request $request)
     {

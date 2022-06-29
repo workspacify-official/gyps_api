@@ -42,12 +42,34 @@ class LikeController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
+    public function unlike(Request $request)
+    {
+            if($request->isMethod('post')){
+
+            $datall = $request->all();
+            $rules = [
+                'post_id' => 'required',
+            ];
+            $customesmesg = [
+                'post_id.required' => 'Post ID is required',
+            ];
+             
+            $validations  = Validator::make($datall, $rules, $customesmesg);
+            if($validations->fails()){
+                return response()->json($validations->errors(), 433);
+            }
+            
+            Like::where('post_id', $request->post_id)->where('user_id', Auth::user()->id)->delete();
+            return response()->json(['status' => 'success'], 200);
+
+
+        }else{
+            return response()->json(['status' => 'false', 'message' => 'Invalid request'], 200);
+        }
+    }
+
+
     public function show($id)
     {
         //

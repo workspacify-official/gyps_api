@@ -67,6 +67,8 @@ Route::middleware(['auth:api'])->group(function () {
         Route::post('/unfollowing', [FollowerController::class, 'unfollowing']);
         Route::post('/update/{id}', [FollowerController::class, 'update']);
         Route::get('/delete/{id}', [FollowerController::class, 'delete']);
+        Route::get('/follow-list', [FollowerController::class, 'follow_list']);
+        Route::get('/following-list', [FollowerController::class, 'following_list']);
     });
     
 
@@ -79,6 +81,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::prefix('like')->group(function () {
         Route::get('/', [LikeController::class, 'index']);
         Route::post('/store', [LikeController::class, 'store']);
+        Route::post('/unlike', [LikeController::class, 'unlike']);
     });
 
 
