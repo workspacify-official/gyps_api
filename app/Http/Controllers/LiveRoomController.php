@@ -31,7 +31,9 @@ class LiveRoomController extends Controller
                                         ->leftJoin('users', 'users.id', '=', 'live_rooms_participants.user_id')
                                         ->select('live_rooms_participants.*', 'users.name', 'users.email')
                                         ->get();
-        $data['hostinfo']     = LiveRoom::find($id);
+        $data['hostinfo']     = LiveRoom::leftJoin('users', 'users.id', '=', 'live_rooms.user_id')
+                                        ->select('live_rooms.*', 'users.name')
+                                        ->where('live_rooms.id', $id)->first();
         return response()->json($data, 200);
     }
 
@@ -70,7 +72,10 @@ class LiveRoomController extends Controller
                 return response()->json($validator->errors(), 422);
             }
 
-            $listdata['hostinfo']    = LiveRoom::find($request->room_id);
+
+            $listdata['hostinfo']     = LiveRoom::leftJoin('users', 'users.id', '=', 'live_rooms.user_id')
+                                        ->select('live_rooms.*', 'users.name')
+                                        ->where('live_rooms.id', $request->room_id)->first();
 
             $totaljoin = live_rooms_participant::where('room_id', $request->room_id)->count();
             if($totaljoin < $listdata['hostinfo']->seat_type){
@@ -151,7 +156,11 @@ class LiveRoomController extends Controller
             $room_partici->user_id = Auth::user()->id;
             $room_partici->save();
 
-             $listdata['hostinfo']    = LiveRoom::find($room->id);
+
+            $listdata['hostinfo']     = LiveRoom::leftJoin('users', 'users.id', '=', 'live_rooms.user_id')
+                                        ->select('live_rooms.*', 'users.name')
+                                        ->where('live_rooms.id', $room->id)->first();
+
              $listdata['members'] = live_rooms_participant::where('room_id', $room->id)
                                         ->leftJoin('users', 'users.id', '=', 'live_rooms_participants.user_id')
                                         ->select('live_rooms_participants.*', 'users.name', 'users.email')
