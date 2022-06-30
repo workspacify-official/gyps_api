@@ -15,6 +15,7 @@ use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\LiveRoomController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\ShareController;
 
 
 Route::middleware(['auth:api'])->group(function () {
@@ -53,8 +54,12 @@ Route::middleware(['auth:api'])->group(function () {
 
 
     // searching user
-    
     Route::get('search', [SearchController::class, 'index']);
+
+
+    // post share
+    Route::post('share', [ShareController::class, 'store']);
+
 
 
     Route::prefix('pull')->group(function () {
