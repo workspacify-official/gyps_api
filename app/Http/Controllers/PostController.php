@@ -33,6 +33,9 @@ class PostController extends Controller
                         'followingcheck' => function ($query) {
                             $query->where('followers.user_id', Auth::id());
                         }])
+            ->withCount(['likecheck', 'likecheck' => function($query){
+                $query->where('user_id', Auth::id());
+            }])
             ->orderBy('id', 'DESC')
             ->paginate(5);
            return response()->json($postdata, 200);
@@ -54,6 +57,9 @@ class PostController extends Controller
                 'followingcheck' => function ($query) {
                     $query->where('followers.user_id', Auth::id());
                 }])
+            ->withCount(['likecheck', 'likecheck' => function($query){
+                $query->where('user_id', Auth::id());
+            }])
             ->orderBy('id', 'DESC')
             ->paginate(5);
         return response()->json($postdata, 200);
@@ -77,6 +83,9 @@ class PostController extends Controller
                 'followingcheck' => function ($query) {
                     $query->where('followers.user_id', Auth::id());
                 }])
+            ->withCount(['likecheck', 'likecheck' => function($query){
+                $query->where('user_id', Auth::id());
+            }])
             ->orderBy('id', 'DESC')
             ->paginate(5);
     return response()->json($postdata, 200);
@@ -97,6 +106,9 @@ class PostController extends Controller
                         'followingcheck' => function ($query) {
                             $query->where('followers.user_id', Auth::id());
                         }])
+            ->withCount(['likecheck', 'likecheck' => function($query){
+                $query->where('user_id', Auth::id());
+            }])
             ->orderBy('id', 'DESC')
             ->skip(10)->paginate(5);
         return response()->json($postdata, 200);
@@ -115,6 +127,9 @@ class PostController extends Controller
             ->withCount(['followingcheck', 
             'followingcheck' => function ($query) {
                 $query->where('followers.user_id', Auth::id());
+            }])
+            ->withCount(['likecheck', 'likecheck' => function($query){
+                $query->where('user_id', Auth::id());
             }])
             ->orderBy('id', 'DESC')
             ->offset(0)->limit(10)->paginate(5);
@@ -135,6 +150,9 @@ class PostController extends Controller
                 'followingcheck' => function ($query) {
                     $query->where('followers.user_id', Auth::id());
                 }])
+            ->withCount(['likecheck', 'likecheck' => function($query){
+                $query->where('user_id', Auth::id());
+            }])
             ->orderBy('id', 'DESC')
             ->paginate(10);
         return response()->json($postdata, 200);

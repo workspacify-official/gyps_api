@@ -42,6 +42,10 @@ class MyPost extends Model
        return $this->hasMany(Like::class, 'post_id', 'id'); 
     }
 
+    public function likecheck()
+    {
+        return $this->hasMany(Like::class, 'post_id', 'id');
+    }
 
 
 
