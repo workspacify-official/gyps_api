@@ -49,6 +49,7 @@ Route::middleware(['auth:api'])->group(function () {
     // 
     
     Route::post('room-chat', [LiveRoomChatController::class, 'store']);
+    Route::post('room-chat-data/{id}', [LiveRoomChatController::class, 'index']);
 
     Route::get('/post-view/{id}', [PostController::class, 'post_view']);
     Route::get('/post-share/{id}', [PostController::class, 'share_count']);

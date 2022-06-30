@@ -16,9 +16,14 @@ class LiveRoomChatController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        //
+        $chatsmgs     = LiveRoomChat::leftJoin('users','users.id', '=', 'live_room_chats.sender_id')
+                        ->where('room_id', $id)
+                        ->select('live_room_chats.*', 'users.name')
+                        ->orderBy('id', 'DESC')
+                        ->get();
+         return response()->json(['chatsmgs' => $chatsmgs], 200);
     }
 
     /**
