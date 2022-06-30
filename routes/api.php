@@ -14,6 +14,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\LiveRoomController;
+use App\Http\Controllers\SearchController;
 
 
 Route::middleware(['auth:api'])->group(function () {
@@ -35,7 +36,6 @@ Route::middleware(['auth:api'])->group(function () {
 
     
     //  live room create
-
     Route::post('live-room-create', [LiveRoomController::class, 'store']);
     Route::get('live-room', [LiveRoomController::class, 'index']);
     Route::post('live-room-join', [LiveRoomController::class, 'live_room_join']);
@@ -48,9 +48,13 @@ Route::middleware(['auth:api'])->group(function () {
 
     Route::post('/profile-update/{id}', [UserController::class, 'update']);
     Route::post('profileimage-delete', [UserController::class, 'profileimagedelete']);
-
     Route::post('profile-photo-upload', [UserController::class, 'profilephotoupload']);
     Route::post('profile-image-moving', [UserController::class, 'profileimagemoving']);
+
+
+    // searching user
+    
+    Route::get('search', [SearchController::class, 'index']);
 
 
     Route::prefix('pull')->group(function () {
