@@ -17,6 +17,7 @@ use App\Http\Controllers\LiveRoomController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ShareController;
 use App\Http\Controllers\SocialMediaLoginController;
+use App\Http\Controllers\LiveRoomChatController;
 
 
 Route::middleware(['auth:api'])->group(function () {
@@ -44,6 +45,10 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('live-room-members/{id}', [LiveRoomController::class, 'members']);
     Route::get('live-room-member-leave/{id}', [LiveRoomController::class, 'memberleave']);
     Route::get('live-room-host-leave/{id}', [LiveRoomController::class, 'hostmemberleave']);
+
+    // 
+    
+    Route::post('room-chat', [LiveRoomChatController::class, 'store']);
 
     Route::get('/post-view/{id}', [PostController::class, 'post_view']);
     Route::get('/post-share/{id}', [PostController::class, 'share_count']);
