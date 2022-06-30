@@ -16,6 +16,7 @@ use App\Http\Controllers\LikeController;
 use App\Http\Controllers\LiveRoomController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ShareController;
+use App\Http\Controllers\SocialMediaLoginController;
 
 
 Route::middleware(['auth:api'])->group(function () {
@@ -103,6 +104,10 @@ Route::get('/emoji', [PublicController::class, 'emoji']);
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/add-user', [LoginController::class, 'addUser']);
 Route::post('/sendemail', [LoginController::class, 'email_send']);
+
+Route::post('/socail-login', [SocialMediaLoginController::class, 'login']);
+
+
 
 // admin panel contrller
 
