@@ -18,6 +18,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ShareController;
 use App\Http\Controllers\SocialMediaLoginController;
 use App\Http\Controllers\LiveRoomChatController;
+use App\Http\Controllers\UserProfileViewController;
 
 
 Route::middleware(['auth:api'])->group(function () {
@@ -37,7 +38,10 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('community-new-post/{id}', [PostController::class, 'communitynew']);
     Route::get('community-allpost', [PostController::class, 'communityallpost']);
 
-    
+
+    Route::get('profileview/{id}', [UserProfileViewController::class, 'index']);
+
+
     //  live room create
     Route::post('live-room-create', [LiveRoomController::class, 'store']);
     Route::get('live-room', [LiveRoomController::class, 'index']);

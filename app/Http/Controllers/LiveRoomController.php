@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\LiveRoom;
 use App\Models\live_rooms_participant;
 use App\Models\LiveRoomChat;
+use App\Models\Follower;
 use Illuminate\Support\Facades\Validator;
 use Auth;
 use Image;
@@ -44,6 +45,7 @@ class LiveRoomController extends Controller
         $data['hostinfo']     = LiveRoom::leftJoin('users', 'users.id', '=', 'live_rooms.user_id')
                                         ->select('live_rooms.*', 'users.name')
                                         ->where('live_rooms.id', $id)->first();
+
         $data['chatsmgs']      = LiveRoomChat::leftJoin('users','users.id', '=', 'live_room_chats.sender_id')
                                              ->where('room_id', $id)
                                              ->select('live_room_chats.*', 'users.name')
