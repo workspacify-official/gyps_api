@@ -10,4 +10,12 @@ class LiveRoom extends Model
     use HasFactory;
     protected $table = 'live_rooms';
     protected $primarykey = 'id';
+
+
+    public function followingcheck()
+    {
+        return $this->hasMany(Follower::class, 'following_id', 'user_id');
+    }
+
+
 }

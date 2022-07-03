@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\LiveRoom;
-
+use Auth;
 class SearchController extends Controller
 {
     /**
@@ -23,18 +23,30 @@ class SearchController extends Controller
                         ->where('email', 'LIKE', '%' . $search . '%')
                         ->orWhere('name', 'LIKE', '%' . $search . '%')
                         ->orWhere('id', 'LIKE', '%' . $search . '%')
+                        ->withCount(['followingcheck', 
+                        'followingcheck' => function ($query) {
+                            $query->where('followers.user_id', Auth::id());
+                        }])
                         ->paginate(20);
             $room       = array();
         }else if($request->type == 'username'){
 
             $users = User::orderBy('name','ASC')
                         ->where('email', 'LIKE', '%' . $search . '%')
+                         ->withCount(['followingcheck', 
+                        'followingcheck' => function ($query) {
+                            $query->where('followers.user_id', Auth::id());
+                        }])
                         ->paginate(20);
             $room       = array();
 
         }else if($request->type == 'id'){
             $users = User::orderBy('name','ASC')
                         ->where('id', 'LIKE', '%' . $search . '%')
+                        ->withCount(['followingcheck', 
+                        'followingcheck' => function ($query) {
+                            $query->where('followers.user_id', Auth::id());
+                        }])
                         ->paginate(20);
             $room       = array();
         }else if($request->type == 'room'){
@@ -45,9 +57,17 @@ class SearchController extends Controller
                         ->where('email', 'LIKE', '%' . $search . '%')
                         ->orWhere('name', 'LIKE', '%' . $search . '%')
                         ->orWhere('id', 'LIKE', '%' . $search . '%')
-                        ->paginate(20);
+                        ->withCount(['followingcheck', 
+                        'followingcheck' => function ($query) {
+                            $query->where('followers.user_id', Auth::id());
+                        }])
+                      ->paginate(20);
             $room   = LiveRoom::orderBy('title', 'ASC')
                             ->where('title', 'LIKE', '%' . $search . '%')
+                            ->withCount(['followingcheck', 
+                                'followingcheck' => function ($query) {
+                                    $query->where('followers.user_id', Auth::id());
+                             }])
                             ->paginate(10);
             
         }

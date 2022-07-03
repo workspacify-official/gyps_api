@@ -21,6 +21,10 @@ class LiveRoomController extends Controller
     {
         $roomlist = LiveRoom::leftJoin('users', 'users.id', '=', 'live_rooms.user_id')
                             ->select('live_rooms.*', 'users.name', 'users.email')
+                            ->withCount(['followingcheck', 
+                                'followingcheck' => function ($query) {
+                                    $query->where('followers.user_id', Auth::id());
+                             }])
                             ->paginate(10);
         return response()->json($roomlist, 200);
     }
@@ -31,7 +35,12 @@ class LiveRoomController extends Controller
         $data['members'] = live_rooms_participant::where('room_id', $id)
                                         ->leftJoin('users', 'users.id', '=', 'live_rooms_participants.user_id')
                                         ->select('live_rooms_participants.*', 'users.name', 'users.email')
+                                        ->withCount(['followingcheck', 
+                                        'followingcheck' => function ($query) {
+                                            $query->where('followers.user_id', Auth::id());
+                                        }])
                                         ->get();
+
         $data['hostinfo']     = LiveRoom::leftJoin('users', 'users.id', '=', 'live_rooms.user_id')
                                         ->select('live_rooms.*', 'users.name')
                                         ->where('live_rooms.id', $id)->first();
@@ -85,13 +94,17 @@ class LiveRoomController extends Controller
 
             $totaljoin = live_rooms_participant::where('room_id', $request->room_id)->count();
             if($totaljoin < $listdata['hostinfo']->seat_type){
-                  $datasave = new live_rooms_participant();
+                  $datasave          = new live_rooms_participant();
                   $datasave->room_id = $request->room_id;
                   $datasave->user_id = Auth::user()->id;
                   $datasave->save();
                 $listdata['members'] = live_rooms_participant::where('room_id', $request->room_id)
                                         ->leftJoin('users', 'users.id', '=', 'live_rooms_participants.user_id')
                                         ->select('live_rooms_participants.*', 'users.name', 'users.email')
+                                        ->withCount(['followingcheck', 
+                                        'followingcheck' => function ($query) {
+                                            $query->where('followers.user_id', Auth::id());
+                                        }])
                                         ->get();
                 return response()->json(['status' => 'success', 'exist_status' => 'false', 'datalist' => $listdata, 'messages' => 'Join success'], 200);
 
@@ -99,6 +112,10 @@ class LiveRoomController extends Controller
                   $listdata['members'] = live_rooms_participant::where('room_id', $request->room_id)
                                         ->leftJoin('users', 'users.id', '=', 'live_rooms_participants.user_id')
                                         ->select('live_rooms_participants.*', 'users.name', 'users.email')
+                                        ->withCount(['followingcheck', 
+                                        'followingcheck' => function ($query) {
+                                            $query->where('followers.user_id', Auth::id());
+                                        }])
                                         ->get();
                     return response()->json(['status' => 'success', 'exist_status' => 'false', 'datalist' => $listdata, 'messages' => 'Join success'], 200);
             }
@@ -170,6 +187,10 @@ class LiveRoomController extends Controller
              $listdata['members'] = live_rooms_participant::where('room_id', $room->id)
                                         ->leftJoin('users', 'users.id', '=', 'live_rooms_participants.user_id')
                                         ->select('live_rooms_participants.*', 'users.name', 'users.email')
+                                        ->withCount(['followingcheck', 
+                                        'followingcheck' => function ($query) {
+                                            $query->where('followers.user_id', Auth::id());
+                                        }])
                                         ->get();
             $message = 'User Successfully registerd';
             return response()->json(['message' => $message, 'datalist' => $listdata], 200);

@@ -20,11 +20,7 @@ class User extends Authenticatable
 
     protected $table = 'users';
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
+    
     protected $hidden = [
         'password',
         'remember_token',
@@ -38,4 +34,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function followingcheck()
+    {
+        return $this->hasMany(Follower::class, 'following_id', 'user_id');
+    }
+
+
+
 }

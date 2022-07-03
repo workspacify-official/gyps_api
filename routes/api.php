@@ -45,7 +45,6 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('live-room-members/{id}', [LiveRoomController::class, 'members']);
     Route::get('live-room-member-leave/{id}', [LiveRoomController::class, 'memberleave']);
     Route::get('live-room-host-leave/{id}', [LiveRoomController::class, 'hostmemberleave']);
-
     // 
     
     Route::post('room-chat', [LiveRoomChatController::class, 'store']);
