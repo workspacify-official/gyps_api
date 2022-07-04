@@ -37,7 +37,7 @@ class User extends Authenticatable
 
     public function followingcheck()
     {
-        return $this->hasMany(Follower::class, 'following_id', 'user_id');
+        return $this->hasMany(Follower::class, 'following_id', 'id');
     }
 
 
