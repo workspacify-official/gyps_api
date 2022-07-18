@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\ProfileImages;
+use App\Models\MyPost;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -15,6 +16,9 @@ class UserController extends Controller
     {
         $user_id          =  Auth::user()->id;
         $data['userinfo'] = Auth::user();
+        $data['videolist']       = MyPost::where('user_id', $user_id)
+                                  ->where('video', '!=', null)
+                                  ->paginate(10);
         //$data['profile_photos'] = ProfileImages::where('user_id', $user_id)->get();
         return response()->json($data, 200);
     }

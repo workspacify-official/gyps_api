@@ -139,10 +139,12 @@ class LiveRoomController extends Controller
 
             $rules = [
                 'seat_type' => 'required',
+                'status'    => 'required',
             ];
 
             $customMessage = [
                 'seat_type.required' => 'Seat type is required',
+                'status.required' => 'Status is required',
             ];
 
             $validator = Validator::make($data, $rules, $customMessage);
@@ -152,9 +154,10 @@ class LiveRoomController extends Controller
 
             $room = new LiveRoom();
             
-            $room->user_id = Auth::user()->id;
-            $room->title = trim($request->title);
+            $room->user_id   = Auth::user()->id;
+            $room->title     = trim($request->title);
             $room->seat_type = trim($request->seat_type);
+            $room->status    = $request->status;
             if($request->tags){
                 // $room->taxvalues =  implode(',', $request->tags);
             }
@@ -173,7 +176,6 @@ class LiveRoomController extends Controller
                 $destinationPath = public_path('/live_room_orginal');
                 $photo->move($destinationPath, $name);
             }
-
             $room->save();
            
             $room_partici = new live_rooms_participant();

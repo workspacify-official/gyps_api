@@ -19,6 +19,7 @@ use App\Http\Controllers\ShareController;
 use App\Http\Controllers\SocialMediaLoginController;
 use App\Http\Controllers\LiveRoomChatController;
 use App\Http\Controllers\UserProfileViewController;
+use App\Http\Controllers\StoryController;
 
 
 Route::middleware(['auth:api'])->group(function () {
@@ -101,6 +102,13 @@ Route::middleware(['auth:api'])->group(function () {
         Route::get('/', [LikeController::class, 'index']);
         Route::post('/store', [LikeController::class, 'store']);
         Route::post('/unlike', [LikeController::class, 'unlike']);
+    });
+
+
+    Route::prefix('story')->group(function () {
+        Route::get('/', [StoryController::class, 'index']);
+        Route::post('/store', [StoryController::class, 'store']);
+        Route::get('/delete/{id}', [StoryController::class, 'delete']);
     });
 
 

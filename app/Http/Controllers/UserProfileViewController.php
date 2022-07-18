@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Follower;
+use App\Models\MyPost;
 class UserProfileViewController extends Controller
 {
     
@@ -18,6 +19,9 @@ class UserProfileViewController extends Controller
                                 ->where('following_id', $id)
                                 ->select('followers.user_id', 'users.name', 'users.photo')
                                 ->get();
+       $data['videolist']       = MyPost::where('user_id', $id)
+                                  ->where('video', '!=', null)
+                                  ->paginate(10);
        return response()->json($data, 200);
     }
 
