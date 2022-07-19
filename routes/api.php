@@ -20,7 +20,9 @@ use App\Http\Controllers\SocialMediaLoginController;
 use App\Http\Controllers\LiveRoomChatController;
 use App\Http\Controllers\UserProfileViewController;
 use App\Http\Controllers\StoryController;
-
+use App\Http\Controllers\UserReportController;
+use App\Http\Controllers\PostReportController;
+use App\Http\Controllers\CommentReportController;
 
 Route::middleware(['auth:api'])->group(function () {
     Route::get('/user', [UserController::class, 'getuser']);
@@ -28,6 +30,8 @@ Route::middleware(['auth:api'])->group(function () {
     Route::post('post-update/{id}', [PostController::class, 'update']);
     Route::get('/get-post', [PostController::class, 'index']);
     Route::get('/mygetpost', [PostController::class, 'mypost']);
+
+    Route::post('/post-public/{id}', [PostController::class, 'post_public']);
     
     Route::get('/followingpost', [PostController::class, 'followingpost']);
     Route::get('/post-edit/{id}', [PostController::class, 'show']);
@@ -57,6 +61,10 @@ Route::middleware(['auth:api'])->group(function () {
 
     Route::get('/post-view/{id}', [PostController::class, 'post_view']);
     Route::get('/post-share/{id}', [PostController::class, 'share_count']);
+
+    Route::get('/postmytagslist', [PostController::class, 'postmytagslist']);
+    Route::get('/postlikemylist', [PostController::class, 'postlikemylist']);
+
 
     Route::post('/profile-update/{id}', [UserController::class, 'update']);
     Route::post('profileimage-delete', [UserController::class, 'profileimagedelete']);
@@ -110,6 +118,25 @@ Route::middleware(['auth:api'])->group(function () {
         Route::post('/store', [StoryController::class, 'store']);
         Route::get('/delete/{id}', [StoryController::class, 'delete']);
     });
+
+    Route::prefix('userreport')->group(function () {
+        Route::get('/', [UserReportController::class, 'index']);
+        Route::post('/store', [UserReportController::class, 'store']);
+        Route::get('/delete/{id}', [UserReportController::class, 'delete']);
+    });
+
+    Route::prefix('postreport')->group(function () {
+        Route::get('/', [PostReportController::class, 'index']);
+        Route::post('/store', [PostReportController::class, 'store']);
+        Route::get('/delete/{id}', [PostReportController::class, 'delete']);
+    });
+    
+    Route::prefix('commentreport')->group(function () {
+        Route::get('/', [CommentReportController::class, 'index']);
+        Route::post('/store', [CommentReportController::class, 'store']);
+        Route::get('/delete/{id}', [CommentReportController::class, 'delete']);
+    });
+    
 
 
 });

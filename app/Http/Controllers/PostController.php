@@ -225,11 +225,14 @@ class PostController extends Controller
             $data = $request->all();
             $rules = [
                 'user_id' => 'required|numeric',
+                'post_status' => 'required|numeric',
             ];
 
             $customesmessge = [
                 'user_id.required' => 'User id is required',
                 'user_id.numeric' => 'Please valid user id',
+                'post_status.required' => 'Post status is required',
+                'post_status.numeric' => 'Post status is numeric value',
             ];
 
             $validations = Validator::make($data, $rules, $customesmessge);
@@ -314,6 +317,55 @@ class PostController extends Controller
         
     }
 
+
+    public function postmytagslist()
+    {
+        $user_id = Auth::id();
+        $postdata = MyPost::leftjoin('users', 'users.id', '=', 'my_posts.user_id')
+            ->leftjoin('divisions', 'divisions.id', '=', 'my_posts.location_id')
+            ->select('my_posts.id', 'my_posts.user_id', 'my_posts.title', 'my_posts.audio', 'my_posts.location_id', 'my_posts.video', 'my_posts.views', 'my_posts.share', 'my_posts.heart', 'my_posts.diamond', 'my_posts.description', 'my_posts.created_at', 'users.name', 'users.photo', 'divisions.division_name')
+            ->whereRaw("find_in_set('".$user_id."',my_posts.tag_freinds)")
+            ->with('images')
+            ->withCount('comments_count')
+            ->withCount('like_count')
+            ->with('comments.user:id,name','comments.replies.user:id,name', 'comments.replies.replies.user:id,name','comments.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.replies.replies.user:id,name')
+            ->withCount(['followingcheck', 
+                'followingcheck' => function ($query) {
+                    $query->where('followers.user_id', Auth::id());
+                }])
+            ->withCount(['likecheck', 'likecheck' => function($query){
+                $query->where('user_id', Auth::id());
+            }])
+            ->orderBy('id', 'DESC')
+            ->paginate(5);
+        return response()->json($postdata, 200);
+    }
+
+    public function postlikemylist()
+    {
+        $user_id = Auth::id();
+        $postdata = MyPost::leftjoin('users', 'users.id', '=', 'my_posts.user_id')
+            ->leftjoin('divisions', 'divisions.id', '=', 'my_posts.location_id')
+            ->leftjoin('likes', 'likes.post_id', '=', 'my_posts.id')
+            ->select('my_posts.id', 'my_posts.user_id', 'my_posts.title', 'my_posts.audio', 'my_posts.location_id', 'my_posts.video', 'my_posts.views', 'my_posts.share', 'my_posts.heart', 'my_posts.diamond', 'my_posts.description', 'my_posts.created_at', 'users.name', 'users.photo', 'divisions.division_name')
+            ->where('likes.user_id', $user_id)
+            ->with('images')
+            ->withCount('comments_count')
+            ->withCount('like_count')
+            ->with('comments.user:id,name','comments.replies.user:id,name', 'comments.replies.replies.user:id,name','comments.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.replies.user:id,name', 'comments.replies.replies.replies.replies.replies.replies.replies.user:id,name')
+            ->withCount(['followingcheck', 
+                'followingcheck' => function ($query) {
+                    $query->where('followers.user_id', Auth::id());
+                }])
+            ->withCount(['likecheck', 'likecheck' => function($query){
+                $query->where('user_id', Auth::id());
+            }])
+            ->orderBy('id', 'DESC')
+            ->paginate(5);
+        return response()->json($postdata, 200);
+    }
+
+
     /**
      * Update the specified resource in storage.
      *
@@ -334,6 +386,7 @@ class PostController extends Controller
             $mypost->description  = $request->description;
             $mypost->location_id  = $request->location_id;
             $mypost->community_id = $request->community_id;
+            $mypost->post_status  = $request->post_status;
 
             if ($request->tag_freinds) {
                 $mypost->tag_freinds = implode(',', json_decode($request->tag_freinds));
@@ -349,12 +402,35 @@ class PostController extends Controller
         return response()->json(['Invalid requirest'], 201);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
+    public function post_public(Request $request, $id)
+    {
+        if($request->isMethod('post')){
+
+            $data = $request->all();
+            $rules = [
+                'post_status' => 'required|numeric',
+            ];
+
+            $customesmessge = [
+                'post_status.required' => 'Post status is required',
+                'post_status.numeric' => 'Post status is numeric value',
+            ];
+            $validations = Validator::make($data, $rules, $customesmessge);
+            if ($validations->fails()) {
+                return response()->json($validations->errors(), 201);
+            }
+            $mypost = MyPost::find($id);
+            $mypost->post_status = $request->post_status;
+            $mypost->save();
+            return response()->json(['message' => 'Post public success'], 200);
+
+        }else{
+            return response()->json(['messages' => 'Invalid request'], 500);
+        }
+    }
+
+    
     public function destroy($id)
     {
         //
