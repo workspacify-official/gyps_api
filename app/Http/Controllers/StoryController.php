@@ -16,7 +16,7 @@ class StoryController extends Controller
         $storys = Story::leftJoin('users', 'users.id', '=', 'stories.user_id')
                     ->select('users.photo', 'users.name', 'stories.*')
                     ->where('stories.created_at', '>=', $date)
-                    ->paginate(10);
+                    ->offset(0)->limit(50)->get();
         return response()->json($storys, 200);
     }
 
