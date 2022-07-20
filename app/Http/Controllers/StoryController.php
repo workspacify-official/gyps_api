@@ -73,7 +73,7 @@ class StoryController extends Controller
                 $filename =  time() . '.' .$file->getClientOriginalName();
                 $path = public_path('/story/video');
                 $file->move($path, $filename);
-                $datasave->video     = $name;
+                $datasave->video     = $filename;
                 $datasave->extension = $file->extension();
             }
 
