@@ -19,6 +19,14 @@ class UserController extends Controller
         $data['videolist']       = MyPost::where('user_id', $user_id)
                                   ->where('video', '!=', null)
                                   ->paginate(10);
+        $data['followlist']     = Follower::leftJoin('users', 'users.id', '=', 'followers.following_id')
+                                ->where('user_id', $user_id)
+                                ->select('followers.following_id', 'users.name', 'users.photo')
+                                ->get();
+        $data['following'] = Follower::leftJoin('users', 'users.id', '=', 'followers.user_id')
+                                ->where('following_id', $user_id)
+                                ->select('followers.user_id', 'users.name', 'users.photo')
+                                ->get();
         //$data['profile_photos'] = ProfileImages::where('user_id', $user_id)->get();
         return response()->json($data, 200);
     }
