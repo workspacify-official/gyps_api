@@ -13,10 +13,16 @@ class StoryController extends Controller
     {
         
         $date = date("Y-m-d H:m:s", strtotime('-24 hours'));
-        $storys = Story::leftJoin('users', 'users.id', '=', 'stories.user_id')
-                    ->select('users.photo', 'users.name', 'stories.*')
+        $storys = Story::groupBy('user_id')
+                    ->leftJoin('users', 'users.id', '=', 'stories.user_id')
+                    ->select('users.photo', 'users.name', 'stories.user_id')
                     ->where('stories.created_at', '>=', $date)
-                    ->offset(0)->limit(50)->get();
+                    ->with(['storys', 
+                        'storys' => function ($query) {
+                            $date = date("Y-m-d H:m:s", strtotime('-24 hours'));
+                            $query->where('stories.created_at', '>=', $date);
+                        }])
+                    ->get();
         return response()->json($storys, 200);
     }
 
@@ -26,12 +32,13 @@ class StoryController extends Controller
 
             $alldata = $request->all();
             $rules = [
-                'image' => 'required|image|mimes:jpg,png,jpeg,gif'
+                'image' => 'image|mimes:jpg,png,jpeg,gif',
+                'video' => 'mimes:mp4,ogx,oga,ogv,ogg,webm',
             ];
             $custmessge = [
-                'image.required' => 'Image is required',
                 'image.image' => 'Please upload images',
                 'image.mimes' => 'Image allow only png,jpg,jpeg and gif',
+                'video.mimes' => 'Image allow only mp4,ogx,ogv,ogg and webm',
             ];
 
             $validations = Validator::make($alldata, $rules, $custmessge);
@@ -52,11 +59,24 @@ class StoryController extends Controller
                 $imgFile->resize(300, 300, function ($constraint) {
                 $constraint->aspectRatio();
                 })->save($destinationPath . '/' . $name);
-                $datasave->file_name = $name;
+                $datasave->image     = $name;
                 $datasave->extension = $photo->extension();
                 $destinationPath = public_path('/story');
                 $photo->move($destinationPath, $name);
             }
+
+            $datasave->text         = $request->text;
+            $datasave->color        = $request->color;
+
+            if($request->hasFile('video')){
+                $file = $request->file('video');
+                $filename =  time() . '.' .$file->getClientOriginalName();
+                $path = public_path('/story/video');
+                return $file->move($path, $filename);
+                $datasave->video     = $name;
+                $datasave->extension = $file->extension();
+            }
+
             $datasave->save();
             return response()->json(['message' => 'Data has saved success'], 200);
 
