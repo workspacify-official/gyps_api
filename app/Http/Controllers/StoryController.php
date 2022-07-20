@@ -68,13 +68,11 @@ class StoryController extends Controller
             $datasave->text         = $request->text;
             $datasave->color        = $request->color;
 
-            if($request->hasFile('video')){
-                $file = $request->file('video');
-                $filename =  time() . '.' .$file->getClientOriginalName();
-                $path = public_path('/story/video');
-                $file->move($path, $filename);
-                $datasave->video     = $filename;
-                $datasave->extension = $file->extension();
+
+            if ($request->hasFile('video')) {
+                $video_name = time() . $request->file('video')->getClientOriginalName();
+                $request->file('video')->move(public_path('story/video'), $video_name);
+                $datasave->video     = $video_name;
             }
 
             $datasave->save();
