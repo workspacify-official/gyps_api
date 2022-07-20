@@ -32,6 +32,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('/mygetpost', [PostController::class, 'mypost']);
 
     Route::post('/post-public/{id}', [PostController::class, 'post_public']);
+    Route::get('/postdraf-list', [PostController::class, 'post_draflist']);
     
     Route::get('/followingpost', [PostController::class, 'followingpost']);
     Route::get('/post-edit/{id}', [PostController::class, 'show']);
